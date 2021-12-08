@@ -1,1 +1,1 @@
-web: gunicorn StepAutomation.wsgi
+web: gunicorn StepAutomation.wsgi --log-file -

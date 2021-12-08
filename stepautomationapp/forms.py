@@ -1,4 +1,4 @@
-from .models import Steps, Documents, Customers
+from .models import  ProjectTemplate, Steps, Documents, Customers
 from django import forms
 
 
@@ -8,14 +8,14 @@ class Stepsform(forms.ModelForm):
         ('No', 'No')
     ]
     step_visibility = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(),
-                                        label='Visibility')
-    step_download = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Download')
+                                        label='Steps Visibile')
+    step_download = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Download Control Visible')
     step_document = forms.FileField(widget=forms.ClearableFileInput(
-        {'class': 'form-control form-control-lg', 'name': 'step_document'}))
+        {'class': 'form-control form-control-lg', 'name': 'step_document'}), label='File for download')
 
     class Meta:
         model = Steps
-        exclude = ('user',)
+        exclude = ['user', 'project_template']
         fields = '__all__'
 
 
@@ -42,3 +42,18 @@ class CustomersForm(forms.ModelForm):
         model = Customers
         exclude = ('user',)
         fields = '__all__'
+
+
+class ProjectTemplateForm(forms.ModelForm):
+    CHOICE_LEAD = [
+            ('GUIDE', 'Guide'),
+            ('GUIDEE', 'Guidee'),
+            ('BACK OFFICE', 'Backoffice'),
+    ]
+    lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(),
+                                        label='Lead')
+    class Meta:
+        model = ProjectTemplate
+        exclude = ('user',)
+        fields = '__all__'
+

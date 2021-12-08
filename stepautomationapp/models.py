@@ -39,14 +39,29 @@ class City(models.Model):
         return self.city
 
 
+class ProjectTemplate(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.CharField(max_length=225)
+    internal_note = models.TextField()
+    lead = models.CharField(max_length=12)
+    added_date = models.DateField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.description
+
+    def get_step_count(self):
+        return Steps.objects.filter(project_template=self).count()
+
+
 class Steps(models.Model):
-    user = models.CharField(max_length=225)
-    step_name = models.CharField(max_length=225)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     step_count = models.IntegerField()
     step_description = models.TextField()
     step_visibility = models.CharField(max_length=20)
     step_download = models.CharField(max_length=20)
     step_document = models.FileField(upload_to='stepfiles')
+    project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
 
 
 class Documents(models.Model):
@@ -68,3 +83,6 @@ class Customers(models.Model):
     email = models.EmailField(max_length=225)
     location = models.CharField(max_length=225)
     customer_added_date = models.DateTimeField(auto_now=True)
+
+
+

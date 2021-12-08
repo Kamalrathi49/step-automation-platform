@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-sm-4">
-                            <a href="javascript:void(0);" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Create Project Template</a>
+                            <a href="{% url 'create_project' %}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Create Project Template</a>
                         </div>
                         <div class="col-sm-8">
                             <div class="text-sm-end">
@@ -53,6 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for template in project_template %}
                                 <tr>
                                     <td>
                                         <div class="form-check">
@@ -66,19 +67,19 @@
                                         </p>
                                     </td>
                                     <td>
-                                        Home Study
+                                        {{template.description}}
                                     </td>
                                      <td>
-                                        John &amp; Courtney
+                                        {{template.user}}
                                     </td>
                                     <td>
-                                        38
+                                        {{template.get_step_count}}
                                     </td>
                                     <td>
-                                        09/12/2018
+                                        {{template.added_date}}
                                     </td>
                                     <td>
-                                        Judy
+                                        {{template.lead}}
                                     </td>
                                     <td>
                                         <i class="uil uil-notes"></i>
@@ -88,105 +89,7 @@
                                         <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck3">
-                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                                        </div>
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                     <td>
-
-                                    </td>
-                                    <td>
-                                        21
-                                    </td>
-                                    <td>
-                                        09/08/2018
-                                    </td>
-                                    <td>
-                                        Judy
-                                    </td>
-                                    <td>
-                                        <i class="uil uil-notes"></i>
-                                    </td>
-                                    <td class="table-action">
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck4">
-                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                                        </div>
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                     <td>
-
-                                    </td>
-                                    <td>
-                                        10
-                                    </td>
-                                    <td>
-                                        09/05/2018
-                                    </td>
-                                    <td>
-                                        Judy
-                                    </td>
-                                    <td>
-                                        <i class="uil uil-notes"></i>
-                                    </td>
-                                    <td class="table-action">
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="customCheck5">
-                                            <label class="form-check-label" for="customCheck2">&nbsp;</label>
-                                        </div>
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
-                                     <td>
-
-                                    </td>
-                                    <td>
-                                        6
-                                    </td>
-                                    <td>
-                                        18/11/2018
-                                    </td>
-                                    <td>
-                                        Char
-                                    </td>
-                                    <td>
-                                        <i class="uil uil-notes"></i>
-                                    </td>
-                                    <td class="table-action">
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
-                                    </td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

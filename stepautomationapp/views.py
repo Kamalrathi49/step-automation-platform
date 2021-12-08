@@ -14,10 +14,10 @@ from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To
 
-from .models import UserData, UserFiles, Steps, Documents, Customers
+from .models import ProjectTemplate, UserData, UserFiles, Steps, Documents, Customers
 from .models import Country
 from userforms.models import UserForms
-from .forms import Stepsform, DocumentsForm, CustomersForm
+from .forms import ProjectTemplateForm, Stepsform, DocumentsForm, CustomersForm
 
 
 # landing page
@@ -426,8 +426,9 @@ def update_password(request, token):
 
 
 @login_required(login_url='/')
-def create_steps(request):
+def create_steps(request, project_template_pk):
     user = User.objects.get(username=request.user)
+    project_template = ProjectTemplate.objects.get(pk=project_template_pk)
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
@@ -440,7 +441,8 @@ def create_steps(request):
         form = Stepsform(request.POST, request.FILES)
         if form.is_valid():
             step = form.save(commit=False)
-            step.user = request.user.username
+            step.user = request.user
+            step.project_template = project_template
             step.save()
             form = Stepsform()
             return render(
@@ -471,6 +473,7 @@ def create_steps(request):
             {
                 'username': username,
                 'profilepic': profilepic,
+                'project_template' : project_template,
                 'form': form
             }
         )
@@ -518,9 +521,11 @@ def dashboard_details(request):
     )
 
 
+
 @login_required(login_url='/')
 def template_details(request):
     user = User.objects.get(username=request.user)
+    project_template = ProjectTemplate.objects.filter(user = user)
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
@@ -534,8 +539,10 @@ def template_details(request):
         {
             'username': username,
             'profilepic': profilepic,
+            'project_template': project_template
         }
     )
+
 
 
 # to display the documents of current user
@@ -789,3 +796,54 @@ def contactus(request):
 def user_logout(request):
     logout(request)
     return redirect('/')
+
+
+@login_required(login_url='/')
+def create_project_template(request):
+    user = User.objects.get(username=request.user)
+    # project_template = ProjectTemplate.objects.get(pk = project_template_pk)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+
+    if request.method == 'POST':
+        form = ProjectTemplateForm(request.POST)
+        if form.is_valid():
+            project_template = form.save(commit=False)
+            project_template.user = request.user
+            project_template.save()
+            form = ProjectTemplateForm()
+            if 'save' in request.POST:
+                return redirect(
+                    '/templates'
+                )
+            elif 'save_&_add_steps' in request.POST:
+                return redirect(
+                    f'/projecttemplate/{project_template.pk}/createsteps'
+                )
+        else:
+            form = ProjectTemplateForm()
+            return render(
+                request,
+                'create_project_template.html',
+                {
+                    'username': username,
+                    'profilepic': profilepic,
+                    'form': form
+                }
+            )
+    else:
+        form = ProjectTemplateForm()
+        return render(
+            request,
+            'create_project_template.html',
+            {
+                'username': username,
+                'profilepic': profilepic,
+                'form': form
+            }
+        )

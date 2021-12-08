@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # CORE SETTINGS
 # ==============================================================================
 SECRET_KEY = config('SECRET_KEY', default=string.ascii_letters)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1, localhost, step-automation-platform.herokuapp.com', cast=Csv())
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
@@ -18,9 +18,9 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 # ==============================================================================
 
 # SENDGRID API
-SENDGRID_EMAIL_API = config('SENDGRID_EMAIL_API')
+# SENDGRID_EMAIL_API = config('SENDGRID_EMAIL_API')
 # FROM EMAIL ADDRESS THAT SHOULD BE SINGLE USER VERIFIED
-FROM_EMAIL = config('FROM_EMAIL')
+# FROM_EMAIL = config('FROM_EMAIL')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 # ==============================================================================
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,15 +84,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'StepAutomation.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME'),
+#         'HOST': config('DB_HOST'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'HOST': config('DB_HOST'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # ==============================================================================
 # AUTHENTICATION AND AUTHORIZATION SETTINGS
@@ -147,7 +156,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # ==============================================================================
 # MEDIA FILES SETTINGS
@@ -160,6 +175,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler",
                         "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
+
+#  Add configuration for static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+import dj_database_url 
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)

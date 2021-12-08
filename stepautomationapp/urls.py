@@ -19,7 +19,7 @@ urlpatterns = [
     path('project/<projectName>', views.get_project_details),
     path('forget-password', views.forgetPassword, name='forgetpassword'),
     path('update-password/<token>', views.update_password, name='update_password'),
-    path('createsteps', views.create_steps, name='create_steps'),
+    path('projecttemplate/<int:project_template_pk>/createsteps', views.create_steps, name='create_steps'),
     path('displaysteps', views.display_steps, name='display_steps'),
     path('dashboard', views.dashboard_details, name='dashboard_details'),
     path('templates', views.template_details, name='templates'),
@@ -31,7 +31,8 @@ urlpatterns = [
     path('projects', views.project_details, name='project_details'),
     path('createcustomer', views.create_customer, name='create_customer'),
     path('editcustomer/<int:customer_id>', views.edit_customer),
-    path('deletecustomer/<int:customer_id>', views.delete_customer)
+    path('deletecustomer/<int:customer_id>', views.delete_customer),
+    path('createprojecttemplate/', views.create_project_template, name='create_project'),
 
 ]
 
