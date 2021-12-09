@@ -7,10 +7,11 @@ class Stepsform(forms.ModelForm):
         ('Yes', 'Yes'),
         ('No', 'No')
     ]
-    step_visibility = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(),
+    visibility = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(),
                                         label='Steps Visibile')
-    step_download = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Download Control Visible')
-    step_document = forms.FileField(widget=forms.ClearableFileInput(
+    download = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Download')
+    upload = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Upload')
+    step_file = forms.FileField(widget=forms.ClearableFileInput(
         {'class': 'form-control form-control-lg', 'name': 'step_document'}), label='File for download')
 
     class Meta:
@@ -28,7 +29,7 @@ class DocumentsForm(forms.ModelForm):
                                  initial={'notarize': 'No'})
     apostille = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Apostille',
                                   initial={'apostille': 'No'})
-    step_document = forms.FileField(widget=forms.ClearableFileInput(
+    step_file = forms.FileField(widget=forms.ClearableFileInput(
         {'class': 'form-control form-control-lg', 'name': 'step_document'}))
 
     class Meta:
@@ -50,10 +51,26 @@ class ProjectTemplateForm(forms.ModelForm):
             ('GUIDEE', 'Guidee'),
             ('BACK OFFICE', 'Backoffice'),
     ]
-    lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(),
-                                        label='Lead')
+    
+    description  = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'style': 'margin-bottom: 20px;',
+        'placeholder': 'Enter Standard Workflow Name'
+    }))
+
+    internal_note = forms.CharField( widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'style': 'margin-bottom: 20px;',
+        'placeholder': 'Optional Internal Note About This Template',
+    }))
+    
+    lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(), label='Lead')
     class Meta:
         model = ProjectTemplate
         exclude = ('user',)
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectTemplateForm, self).__init__(*args, **kwargs)
+        self.fields['internal_note'].required = False
 

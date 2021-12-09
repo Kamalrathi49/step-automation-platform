@@ -42,7 +42,7 @@ class City(models.Model):
 class ProjectTemplate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=225)
-    internal_note = models.TextField()
+    internal_note = models.TextField(blank=True, null=True)
     lead = models.CharField(max_length=12)
     added_date = models.DateField(auto_now_add=True)
 
@@ -56,18 +56,20 @@ class ProjectTemplate(models.Model):
 
 class Steps(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    step_count = models.IntegerField()
-    step_description = models.TextField()
-    step_visibility = models.CharField(max_length=20)
-    step_download = models.CharField(max_length=20)
-    step_document = models.FileField(upload_to='stepfiles')
+    count = models.PositiveIntegerField()
+    description = models.CharField(max_length=224)
+    instruction = models.TextField()
+    visibility = models.CharField(max_length=20)
+    download = models.CharField(max_length=20)
+    upload = models.CharField(max_length=20)
+    step_file = models.FileField(upload_to='stepfiles')
     project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
 
 
 class Documents(models.Model):
     user = models.CharField(max_length=225)
     description = models.CharField(max_length=225)
-    step_document = models.FileField(upload_to='documents')
+    step_file = models.FileField(upload_to='documents')
     notarize = models.CharField(max_length=10)
     apostille = models.CharField(max_length=10)
     file_add_date = models.DateTimeField(auto_now=True)

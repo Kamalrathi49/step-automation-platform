@@ -1,0 +1,28 @@
+{% extends 'base_page.html' %}
+{% load crispy_forms_filters %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex flex-column h-100 rounded-3 p-4">
+              <div class="py-2 p-md-3">
+                <!-- Title + Delete link-->
+                <div class="d-sm-flex align-items-center justify-content-between pb-4 text-center text-sm-start">
+                  <h1 class="h3 mb-2 text-nowrap">Update Step</h1>
+                </div>
+                <h4 class="h4 mb-4  text-grey">Template: {{project_template.description}}</h4>
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                   {{form | crispy}}
+                    <br/>
+                    <button type="submit" name="save" class="btn btn-success mr-2">{% trans 'Save' %}</button>
+                    <a href="{% url 'display_steps' project_template.id  %}">
+                      <button type="button" class="btn btn-light m-2">{% trans 'Cancel' %}</button>
+                    </a>
+                </form>
+              </div>
+            </div>
+        </div>
+        <!-- end col-12 -->
+    </div> <!-- end row -->
+{% endblock %}

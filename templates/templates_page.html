@@ -6,10 +6,10 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                        <li class="breadcrumb-item active">Standard</li>
+                        <li class="breadcrumb-item active">Workflows</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Project Templates</h4>
+                <h4 class="page-title">Workflows</h4>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-sm-4">
-                            <a href="{% url 'create_project' %}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Create Project Template</a>
+                            <a href="{% url 'create_workflows' %}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>Add Workflows</a>
                         </div>
                         <div class="col-sm-8">
                             <div class="text-sm-end">
@@ -44,7 +44,6 @@
                                     </th>
                                     <th class="all">Status </th>
                                     <th>Description</th>
-                                    <th>Customer</th>
                                     <th>Steps</th>
                                     <th>Added Date</th>
                                     <th>Lead</th>
@@ -69,11 +68,10 @@
                                     <td>
                                         {{template.description}}
                                     </td>
-                                     <td>
-                                        {{template.user}}
-                                    </td>
                                     <td>
-                                        {{template.get_step_count}}
+                                        <a href="{% url 'display_steps' template.id %}">
+                                            {{template.get_step_count}}
+                                        </a>
                                     </td>
                                     <td>
                                         {{template.added_date}}
@@ -85,8 +83,8 @@
                                         <i class="uil uil-notes"></i>
                                     </td>
                                     <td class="table-action">
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        <a href="{% url 'edit_workflows' template.id %}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                        <a href="{% url 'delete_workflows' template.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                     </td>
                                 </tr>
                                 {% endfor %}

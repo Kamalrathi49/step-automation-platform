@@ -7,7 +7,7 @@
             <div class="d-flex flex-column h-100 rounded-3 p-4">
               <div class="py-2 p-md-3">
                 <div class="d-sm-flex align-items-center justify-content-between pb-4 text-center text-sm-start">
-                  <h1 class="h3 mb-2 text-nowrap">Add Standard Workflow</h1>
+                  <h1 class="h3 mb-2 text-nowrap">Update Standard Workflow</h1>
                 </div>
                 <form method="post">
                   {% csrf_token %}
@@ -17,7 +17,6 @@
                       <a href="/workflows">
                         <button type="button" class="btn btn-light m-2">{% trans 'Cancel' %}</button>
                       </a>
-                      <button type="submit" name="save_&_add_steps"  class="btn btn-success">{% trans 'Save & Add Steps' %}</button>
                 </form>
               </div>
             </div>
