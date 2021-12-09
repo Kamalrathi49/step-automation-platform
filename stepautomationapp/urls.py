@@ -32,7 +32,7 @@ urlpatterns = [
     path('createcustomer', views.create_customer, name='create_customer'),
     path('editcustomer/<int:customer_id>', views.edit_customer),
     path('deletecustomer/<int:customer_id>', views.delete_customer),
-    path('createprojecttemplate/', views.create_project_template, name='create_project'),
+    path('createprojecttemplate', views.create_project_template, name='create_project'),
 
 ]
 
