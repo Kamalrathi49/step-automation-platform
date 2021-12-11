@@ -1,4 +1,5 @@
 {% extends 'base_page.html' %}
+{% load stringspliceing %}
 {% block content %}
 <div class="row">
   <div class="col-12">
@@ -6,10 +7,11 @@
           <div class="page-title-right">
               <ol class="breadcrumb m-0">
                   <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                  <li class="breadcrumb-item active">Workflows</li>
+                  <li class="breadcrumb-item active"><a href="/workflows">Standard Workflows</a></li>
+                  <li class="breadcrumb-item active"> Standard Workflows Steps</li>
               </ol>
           </div>
-          <h4 class="page-title">Workflows</h4>
+          <h4 class="page-title">Standard Workflows Steps</h4>
       </div>
   </div>
 </div>
@@ -20,8 +22,12 @@
       <div class="card">
           <div class="card-body">
               <div class="row mb-2">
+                    <p> {{project_template.description}}  
+                        <span style="margin-left:6px;" class="badge bg-success">{{project_template.get_step_count}} Steps </span>
+                    </p>
+                  <p>Lead: {{project_template.lead}}</p>
                   <div class="col-sm-4">
-                      <a href="{% url 'create_steps' project_template_id %}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>Add Steps</a>
+                      <a href="{% url 'create_steps' project_template.id %}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>Add Step</a>
                   </div>
                   <div class="col-sm-8">
                     <div class="text-sm-end">
@@ -45,8 +51,8 @@
                               <th>Description</th>
                               <th>Instruction</th>
                               <th>Step Visible</th>
-                              <th>File</th>
                               <th>Download</th>
+                              <th>File</th>
                               <th>Upload</th>
                               <th style="width: 85px;">Action</th>
                           </tr>
@@ -75,21 +81,20 @@
                                 {% elif step.visibility == 'No' %}
                                   <i class="uil uil-eye-slash"></i>
                                 {% endif %}
-
-                              </td>
-                              <td>
-                                  {{step.step_file|truncatechars:15}}
                               </td>
                               <td>
                                   {{step.download}}
+                              </td>
+                              <td>
+                                <a href="/media/{{step.step_file}}" target="_blank"> {{step.step_file | splicestring:10}}
                               </td>
                               <td>
                                   {{step.upload}}
                               </td>
                              
                               <td class="table-action">
-                                  <a href="{% url 'edit_steps'  project_template_id step.id %}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                  <a href="{% url 'delete_steps'  project_template_id step.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                  <a href="{% url 'edit_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                  <a href="{% url 'delete_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                               </td>
                           </tr>
                           {% endfor %}

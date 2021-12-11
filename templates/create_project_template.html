@@ -1,27 +1,26 @@
-{% extends 'base_page.html' %}
 {% load crispy_forms_filters %}
 {% load i18n %}
-{% block content %}
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex flex-column h-100 rounded-3 p-4">
-              <div class="py-2 p-md-3">
-                <div class="d-sm-flex align-items-center justify-content-between pb-4 text-center text-sm-start">
-                  <h1 class="h3 mb-2 text-nowrap">Add Standard Workflow</h1>
-                </div>
-                <form method="post">
-                  {% csrf_token %}
-                   {{form|crispy}}
-                    <br/>
-                      <button type="submit" name="save" class="btn btn-success mr-2">{% trans 'Save' %}</button>
-                      <a href="/workflows">
-                        <button type="button" class="btn btn-light m-2">{% trans 'Cancel' %}</button>
-                      </a>
-                      <button type="submit" name="save_&_add_steps"  class="btn btn-success">{% trans 'Save & Add Steps' %}</button>
-                </form>
-              </div>
-            </div>
+<!-- Modal -->
+<div class="modal fade" id="create_workflows" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-nowrap" id="exampleModalLabel">Add Standard Workflow</h5>
+        <button type="button" class="close border-0" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'create_workflows' %}" method="post">
+          {% csrf_token %}
+           {{form|crispy}}
+        </br>
+           <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+             <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+         </div>
+          </form>
         </div>
-        <!-- end col-12 -->
-    </div> <!-- end row -->
-{% endblock %}
+    </div>
+  </div>
+</div>

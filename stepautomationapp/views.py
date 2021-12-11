@@ -524,6 +524,7 @@ def display_steps(request, project_template_pk ):
         profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
         username = request.user
     steps = Steps.objects.filter(project_template_id = project_template_pk)
+    project_template = ProjectTemplate.objects.get(id = project_template_pk)
     return render(
         request,
         'display_steps.html',
@@ -531,7 +532,7 @@ def display_steps(request, project_template_pk ):
             'username': username,
             'profilepic': profilepic,
             'steps': steps,
-            'project_template_id' : project_template_pk
+            'project_template' : project_template
         }
     )
 
@@ -561,6 +562,7 @@ def dashboard_details(request):
 def template_details(request):
     user = User.objects.get(username=request.user)
     project_template = ProjectTemplate.objects.filter(user = user)
+    form = ProjectTemplateForm()
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
@@ -574,7 +576,8 @@ def template_details(request):
         {
             'username': username,
             'profilepic': profilepic,
-            'project_template': project_template
+            'form': form,
+            'project_template': project_template,
         }
     )
 
@@ -852,13 +855,8 @@ def create_project_template(request):
             project_template.user = request.user
             project_template.save()
             form = ProjectTemplateForm()
-            if 'save' in request.POST:
-                return redirect(
+            return redirect(
                     '/workflows'
-                )
-            elif 'save_&_add_steps' in request.POST:
-                return redirect(
-                    f'/workflows/{project_template.pk}/createsteps'
                 )
         else:
             form = ProjectTemplateForm()

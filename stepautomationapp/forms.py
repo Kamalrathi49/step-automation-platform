@@ -12,7 +12,7 @@ class Stepsform(forms.ModelForm):
     download = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Download')
     upload = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Upload')
     step_file = forms.FileField(widget=forms.ClearableFileInput(
-        {'class': 'form-control form-control-lg', 'name': 'step_document'}), label='File for download')
+        {'class': 'form-control form-control-lg', 'name': 'step_file'}), label='File for download')
 
     class Meta:
         model = Steps
@@ -58,19 +58,14 @@ class ProjectTemplateForm(forms.ModelForm):
         'placeholder': 'Enter Standard Workflow Name'
     }))
 
-    internal_note = forms.CharField( widget=forms.Textarea(attrs={
+    lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(attrs={
         'class': 'form-control',
-        'style': 'margin-bottom: 20px;',
-        'placeholder': 'Optional Internal Note About This Template',
-    }))
-    
-    lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(), label='Lead')
+        'style': 'cursor: pointer;',
+        }), label='Lead')
     class Meta:
         model = ProjectTemplate
         exclude = ('user',)
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super(ProjectTemplateForm, self).__init__(*args, **kwargs)
-        self.fields['internal_note'].required = False
+   
 

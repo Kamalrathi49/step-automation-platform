@@ -42,7 +42,6 @@ class City(models.Model):
 class ProjectTemplate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=225)
-    internal_note = models.TextField(blank=True, null=True)
     lead = models.CharField(max_length=12)
     added_date = models.DateField(auto_now_add=True)
 
