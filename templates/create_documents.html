@@ -1,35 +1,26 @@
-{% extends 'base_page.html' %}
 {% load crispy_forms_filters %}
 {% load i18n %}
-{% block content %}
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                          <li class="breadcrumb-item"><a href="#">Standard</a></li>
-                          <li class="breadcrumb-item"><a href="/documents">Files</a></li>
-                          <li class="breadcrumb-item">Add File</li>
-                    </ol>
-                </div>
-                <h4 class="page-title">Add File</h4>
-            </div>
+<!-- Modal -->
+<div class="modal fade" id="create_document" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-nowrap" id="exampleModalLabel">Add Standard File</h5>
+        <button type="button" class="close border-0" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'create_document' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+           {{createform|crispy}}
+        </br>
+           <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+             <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+         </div>
+          </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex flex-column h-100 rounded-3 shadow-lg p-4">
-              <div class="py-2 p-md-3">
-                  <form method="post" enctype="multipart/form-data">
-                      {% csrf_token %}
-                      {{ form | crispy }}
-                      <br/>
-                      <button type="submit" class="btn btn-success">{% trans 'Add' %}</button>
-                      <a href="/documents"><button type="button" class="btn btn-success">{% trans 'Cancel' %}</button></a>
-                  </form>
-              </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+  </div>
+</div>

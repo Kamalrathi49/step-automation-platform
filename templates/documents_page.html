@@ -7,17 +7,17 @@
         <link href="{% static 'assets/css/vendor/responsive.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 {% block content %}
+{% include 'create_documents.html' %}
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                              <li class="breadcrumb-item"><a href="#">Standard</a></li>
-                              <li class="breadcrumb-item">Files</li>
+                              <li class="breadcrumb-item">Standard Files</l>
                         </ol>
                     </div>
-                    <h4 class="page-title">Files</h4>
+                    <h4 class="page-title">Standard Files</h4>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <a href="/createdocument" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add File</a>
+                                <btn class="btn btn-danger mb-2" data-toggle="modal" data-target="#create_document"><i class="mdi mdi-plus-circle me-2"></i> Add File</btn>
                             </div>
                         </div>
 
@@ -46,7 +46,7 @@
                                         <th>Notarize</th>
                                         <th> Apostille</th>
                                         <th>Added Date</th>
-
+                                        <th style="width: 85px;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,6 +73,11 @@
                                             </td>
                                             <td>
                                                 {{each.file_add_date | date}}
+                                            </td>
+                                            <td class="table-action d-flex flex-row ">
+                                                <btn class=" btn action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditdocument{{each.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
+                                                {% include 'edit_document.html' %}
+                                                <a href="{% url 'delete_document' each.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                             </td>
                                         </tr>
                                     {% endfor %}

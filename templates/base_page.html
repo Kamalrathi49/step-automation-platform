@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    
 <!-- Mirrored from coderthemes.com/hyper/saas/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 23 Sep 2021 08:19:29 GMT -->
 <head>
     {% load static %}
@@ -11,7 +11,6 @@
         <meta content="Coderthemes" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="assets/images/favicon.ico">
-
         <!-- App css -->
         <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" id="light-style" />
@@ -68,11 +67,11 @@
                             <div class="collapse" id="sidebarresource">
                                 <ul class="side-nav-second-level" style="position: relative">
                                     <li>
-                                        <a href="/documents">
+                                        <a href="/documents/">
                                             <i class="uil uil-file-alt"></i><span>Files</span></a>
                                     </li>
                                     <li>
-                                        <a href="/workflows"> <i class="uil uil-folder-open"></i> <span>Workflows</span></a>
+                                        <a href="/workflows/"> <i class="uil uil-folder-open"></i> <span>Workflows</span></a>
                                     </li>
                                     {% if '/displaysteps/' in request.path %}
                                         <li>

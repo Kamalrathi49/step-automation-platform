@@ -73,6 +73,9 @@ class Documents(models.Model):
     apostille = models.CharField(max_length=10)
     file_add_date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.description + "-" + self.user
+
 
 class Customers(models.Model):
     user = models.CharField(max_length=225)

@@ -1,3 +1,4 @@
+from os import error
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -587,6 +588,7 @@ def template_details(request):
 @login_required(login_url='/')
 def documents_details(request):
     user = User.objects.get(username=request.user)
+    form = DocumentsForm()
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
@@ -601,7 +603,8 @@ def documents_details(request):
         {
             'username': username,
             'profilepic': profilepic,
-            'documents': documents
+            'documents': documents,
+            'createform': form
         }
     )
 
@@ -748,7 +751,7 @@ def create_document(request):
         form = DocumentsForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            document.user = request.user.username
+            document.user = request.user
             document.save()
             return redirect('/documents')
         else:
@@ -758,7 +761,7 @@ def create_document(request):
                 {
                     'username': username,
                     'profilepic': profilepic,
-                    'form': form
+                    'createform': form
                 }
             )
     else:
@@ -769,7 +772,7 @@ def create_document(request):
             {
                 'username': username,
                 'profilepic': profilepic,
-                'form': form
+                'createform': form
             }
         )
 
@@ -912,3 +915,35 @@ def edit_project_template(request, project_template_pk):
 def delete_project_template(request, project_template_pk):
     ProjectTemplate.objects.get(pk=project_template_pk).delete()
     return redirect('/workflows')
+
+
+def edit_document(request, documents_pk):
+    user = User.objects.get(username=request.user)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+
+    document = Documents.objects.get(id=documents_pk)
+    if request.method == 'POST':
+        form = DocumentsForm(request.POST or None, instance=document)
+        if form.is_valid():
+            form.save()
+            return redirect('/documents')
+        else: 
+            print('------..----fail-------...-----')
+            return redirect('/documents')
+
+    else:
+        form = DocumentsForm(request.POST or None, instance = document)
+        ctx = {'form': form, 'username': username, 'profilepic': profilepic}
+        return render(request, 'edit_document.html', ctx)
+
+
+
+def delete_document(request, documents_pk):
+    Documents.objects.get(pk=documents_pk).delete()
+    return redirect('/documents')
