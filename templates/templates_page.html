@@ -82,7 +82,8 @@
                                         {{template.lead}}
                                     </td>
                                     <td class="table-action d-flex flex-row ">
-                                        <a href="{% url 'edit_workflows' template.id %}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                        <btn class="btn action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditworkflow{{template.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
+                                        {% include 'edit_project_template.html' %}
                                         <a href="#" class="action-icon"> <i class="mdi mdi-content-copy"></i></a>
                                         <a href="{% url 'delete_workflows' template.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                     </td>

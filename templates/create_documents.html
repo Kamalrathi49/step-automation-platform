@@ -1,26 +1,24 @@
 {% load crispy_forms_filters %}
 {% load i18n %}
 <!-- Modal -->
-<div class="modal fade" id="create_document" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-nowrap" id="exampleModalLabel">Add Standard File</h5>
-        <button type="button" class="close border-0" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="{% url 'create_document' %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-           {{createform|crispy}}
-        </br>
-           <div class="modal-footer">
-             <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
-             <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
-         </div>
-          </form>
-        </div>
-    </div>
-  </div>
+<div class="modal fade" id="staticBackdropcreatedocument" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="staticBackdropLabel">Add Standard File</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body">
+              <form action="{% url 'create_document' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 {{createform|crispy}}
+                 <br/>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+              </div> 
+            </form>
+            </div>
+        </div> <!-- end modal content-->
+    </div> <!-- end modal dialog-->
 </div>

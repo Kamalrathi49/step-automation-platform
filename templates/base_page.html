@@ -5,12 +5,13 @@
 <head>
     {% load static %}
         <meta charset="utf-8" />
-        <title>Starter Page | Hyper - Responsive Bootstrap 5 Admin Dashboard</title>
+        <title>Step Guide</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="{% static 'assets/images/logo_sm.png' %}">
+        <!-- <link rel="icon" type="image/x-icon" href="{% static 'assets/images/logo_sm.png' %}"> -->
         <!-- App css -->
         <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" id="light-style" />
@@ -38,10 +39,10 @@
                 <!-- LOGO -->
                 <a href="/" class="logo text-center logo-light">
                     <span class="logo-lg">
-                        <img src="{% static 'assets/images/logo.png' %}" alt="" height="16">
+                        <img src="{% static 'assets/images/STEPGUIDE-Logo-C1-removebg1.png' %}" alt="STEPGUIDE">
                     </span>
                     <span class="logo-sm">
-                        <img src="{% static 'assets/images/logo_sm.png' %}" alt="" height="16">
+                        <img src="{% static 'assets/images/STEPGUIDE-Logo-C1-removebg.png' %}" alt="STEPGUIDE" >
                     </span>
                 </a>
 
@@ -85,12 +86,6 @@
                             </div>
                         </li>
                         <li class="side-nav-item">
-                            <a href="/customers" class="side-nav-link">
-                                <i class="uil uil-heart"></i>
-                                <span> Customers </span>
-                            </a>
-                        </li>
-                        <li class="side-nav-item">
                             <a href="/projects" class="side-nav-link">
                                 <i class="uil uil-folder-open"></i>
                                 <span> Projects </span>
@@ -113,6 +108,12 @@
                             <a href="/forms/getforms" class="side-nav-link">
                                 <i class="fa fa-wpforms" aria-hidden="true"></i>
                                 <span> Forms </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="/customers" class="side-nav-link">
+                                <i class="uil uil-heart"></i>
+                                <span> Customers </span>
                             </a>
                         </li>
                     </ul>
@@ -599,6 +600,8 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     </body>
 

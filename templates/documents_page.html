@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <btn class="btn btn-danger mb-2" data-toggle="modal" data-target="#create_document"><i class="mdi mdi-plus-circle me-2"></i> Add File</btn>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropcreatedocument"><i class="mdi mdi-plus-circle me-2"></i> Add File</button>
                             </div>
                         </div>
 
@@ -43,8 +43,6 @@
                                         </th>
                                         <th>Description</th>
                                         <th>Files</th>
-                                        <th>Notarize</th>
-                                        <th> Apostille</th>
                                         <th>Added Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
@@ -65,17 +63,10 @@
                                                 <a href="/media/{{each.step_file}}" target="_blank">{{each.step_file | splicestring:10}}</a>
                                             </td>
                                             <td>
-                                                {{each.notarize}}
-                                            </td>
-
-                                            <td>
-                                                {{each.apostille}}
-                                            </td>
-                                            <td>
                                                 {{each.file_add_date | date}}
                                             </td>
                                             <td class="table-action d-flex flex-row ">
-                                                <btn class=" btn action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditdocument{{each.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
+                                                <btn class="btn action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditdocument{{each.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
                                                 {% include 'edit_document.html' %}
                                                 <a href="{% url 'delete_document' each.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                             </td>

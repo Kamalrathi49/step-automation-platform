@@ -55,13 +55,13 @@ class ProjectTemplate(models.Model):
 
 class Steps(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    count = models.PositiveIntegerField()
+    count = models.FloatField()
     description = models.CharField(max_length=224)
     instruction = models.TextField()
-    visibility = models.CharField(max_length=20)
-    download = models.CharField(max_length=20)
-    upload = models.CharField(max_length=20)
+    visibility = models.BooleanField(default=False)
+    download = models.BooleanField(default=False)
     step_file = models.FileField(upload_to='stepfiles')
+    upload = models.BooleanField(default=False)
     project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
 
 
@@ -69,8 +69,6 @@ class Documents(models.Model):
     user = models.CharField(max_length=225)
     description = models.CharField(max_length=225)
     step_file = models.FileField(upload_to='documents')
-    notarize = models.CharField(max_length=10)
-    apostille = models.CharField(max_length=10)
     file_add_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):

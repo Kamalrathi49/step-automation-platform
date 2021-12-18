@@ -446,13 +446,8 @@ def create_steps(request, project_template_pk):
             step.project_template = project_template
             step.save()
             form = Stepsform()
-            if 'save' in request.POST:
-                return redirect(
-                    '/workflows'
-                )
-            elif 'save_&_add_another_step' in request.POST:
-                return redirect(
-                    f'/workflows/{project_template.pk}/createsteps'
+            return redirect(
+                    f'/displaysteps/{project_template_pk}/'
                 )
            
         else:
@@ -526,6 +521,7 @@ def display_steps(request, project_template_pk ):
         username = request.user
     steps = Steps.objects.filter(project_template_id = project_template_pk)
     project_template = ProjectTemplate.objects.get(id = project_template_pk)
+    form = Stepsform()
     return render(
         request,
         'display_steps.html',
@@ -533,7 +529,8 @@ def display_steps(request, project_template_pk ):
             'username': username,
             'profilepic': profilepic,
             'steps': steps,
-            'project_template' : project_template
+            'project_template' : project_template,
+            'createform': form
         }
     )
 

@@ -1,6 +1,7 @@
 {% extends 'base_page.html' %}
 {% load stringspliceing %}
 {% block content %}
+{% include 'create_steps.html' %}
 <div class="row">
   <div class="col-12">
       <div class="page-title-box">
@@ -27,7 +28,7 @@
                     </p>
                   <p>Lead: {{project_template.lead}}</p>
                   <div class="col-sm-4">
-                      <a href="{% url 'create_steps' project_template.id %}" class="btn btn-danger mb-2"><i class="mdi mdi-plus-circle me-2"></i>Add Step</a>
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropcreatesteps" ><i class="mdi mdi-plus-circle me-2"></i>Add Step</a>
                   </div>
                   <div class="col-sm-8">
                     <div class="text-sm-end">
@@ -76,24 +77,33 @@
                                   {{step.instruction}}
                               </td>
                               <td> 
-                                {% if step.visibility == 'Yes' %}
-                                  <i class="uil uil-eye">
-                                {% elif step.visibility == 'No' %}
-                                  <i class="uil uil-eye-slash"></i>
+                                {% if step.visibility == True %}
+                                  <ion-icon name="eye-outline"></ion-icon>
+                                {% elif step.visibility == False %}
+                                  <ion-icon name="eye-off-outline"></ion-icon>
                                 {% endif %}
                               </td>
                               <td>
-                                  {{step.download}}
+                                {% if step.download == True %}
+                                <ion-icon style="font-size: 25px;color: green;"  name="checkmark-outline"></ion-icon>
+                                {% elif step.download == False %}
+                                    <ion-icon style="font-size: 25px;color: red;"  name="close-outline"></ion-icon>
+                                {% endif %}
                               </td>
                               <td>
                                 <a href="/media/{{step.step_file}}" target="_blank"> {{step.step_file | splicestring:10}}
                               </td>
                               <td>
-                                  {{step.upload}}
+                                {% if step.upload == True %}
+                                <ion-icon style="font-size: 25px;color: green;"  name="checkmark-outline"></ion-icon>
+                                {% elif step.upload == False %}
+                                    <ion-icon style="font-size: 25px;color: red;"  name="close-outline"></ion-icon>
+                                {% endif %}
                               </td>
                              
                               <td class="table-action">
-                                  <a href="{% url 'edit_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                <btn style="cursor: pointer;" class="action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditstep{{step.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
+                                {% include 'edit_steps.html' %}
                                   <a href="{% url 'delete_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                               </td>
                           </tr>

@@ -1,28 +1,43 @@
-{% extends 'base_page.html' %}
 {% load crispy_forms_filters %}
 {% load i18n %}
-{% block content %}
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex flex-column h-100 rounded-3 p-4">
-              <div class="py-2 p-md-3">
-                <!-- Title + Delete link-->
-                <div class="d-sm-flex align-items-center justify-content-between pb-4 text-center text-sm-start">
-                  <h1 class="h3 mb-2 text-nowrap">Update Step</h1>
-                </div>
-                <h4 class="h4 mb-4  text-grey">Template: {{project_template.description}}</h4>
-                <form method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                   {{form | crispy}}
-                    <br/>
-                    <button type="submit" name="save" class="btn btn-success mr-2">{% trans 'Save' %}</button>
-                    <a href="{% url 'display_steps' project_template.id  %}">
-                      <button type="button" class="btn btn-light m-2">{% trans 'Cancel' %}</button>
-                    </a>
-                </form>
-              </div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropeditstep{{step.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="staticBackdropLabel">Edit Standard Workflow Step</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body">
+              <form action="{% url 'edit_steps' project_template.id step.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+                <label for="count">Step Number</label>
+                <input class="form-control mb-1" type="number" placeholder="Ex. 1.0"  value="{{step.count}}" name="count" required >
+
+                <label for="description">Description</label>
+                <input class="form-control mb-1" type="text" placeholder="Description"  value="{{step.description}}" name="description" required >
+
+                <label for="instruction">Instructions</label>
+                <input class="form-control mb-1" type="text" placeholder="Enter Detailed Step Instructions"  value="{{step.instruction}}" name="instruction" required >
+               
+                <label for="visibility">Step Visibile</label>
+                <input class="mb-1"  type="checkbox" value="{{step.visibility}}" name="visibility" {% if step.visibility %} checked {% endif %} >
+               
+                <label for="download">Download control visible</label>
+                <input class="mb-1" type="checkbox"  value="{{step.download}}" name="download">
+               
+                <label for="step_file">File for download</label>
+                <input class="form-control mb-1" type="file"  value="{{step.step_file}}" name="step_file" required>
+               
+                <label for="upload">Upload control visible</label>
+                <input class="mb-1" type="checkbox"  value="{{step.upload}}" name="upload">
+              <br/>  
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+              </div> 
+        </form>
             </div>
-        </div>
-        <!-- end col-12 -->
-    </div> <!-- end row -->
-{% endblock %}
+        </div> <!-- end modal content-->
+    </div> <!-- end modal dialog-->
+</div>

@@ -1,26 +1,31 @@
-{% extends 'base_page.html' %}
 {% load crispy_forms_filters %}
 {% load i18n %}
-{% block content %}
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex flex-column h-100 rounded-3 p-4">
-              <div class="py-2 p-md-3">
-                <div class="d-sm-flex align-items-center justify-content-between pb-4 text-center text-sm-start">
-                  <h1 class="h3 mb-2 text-nowrap">Update Standard Workflow</h1>
-                </div>
-                <form method="post">
-                  {% csrf_token %}
-                   {{form|crispy}}
-                    <br/>
-                      <button type="submit" name="save" class="btn btn-success mr-2">{% trans 'Save' %}</button>
-                      <a href="/workflows">
-                        <button type="button" class="btn btn-light m-2">{% trans 'Cancel' %}</button>
-                      </a>
-                </form>
-              </div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropeditworkflow{{template.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="staticBackdropLabel">Edit Standard Workflow</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body">
+              <form action="{% url 'edit_workflows' template.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+                <label for="description">Description</label>
+                <input class="form-control mb-2" type="text" placeholder="Description"  value="{{template.description}}" name="description" required >
+                <label for="lead">Lead</label>
+                <select id="lead" name="lead"  class="form-control data-form">
+                  <option value="GUIDE">Guide</option>
+                  <option value="GUIDEE">Guidee</option>
+                  <option value="BACK OFFICE">Backoffice</option>
+                </select>    
+              <br/>  
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+              </div> 
+        </form>
             </div>
-        </div>
-        <!-- end col-12 -->
-    </div> <!-- end row -->
-{% endblock %}
+        </div> <!-- end modal content-->
+    </div> <!-- end modal dialog-->
+</div>

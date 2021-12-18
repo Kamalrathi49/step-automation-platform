@@ -1,18 +1,41 @@
+from django.forms.widgets import CheckboxInput
 from .models import  ProjectTemplate, Steps, Documents, Customers
 from django import forms
 
 
 class Stepsform(forms.ModelForm):
-    DISPLAY_Visibity_CHOICES = [
-        ('Yes', 'Yes'),
-        ('No', 'No')
-    ]
-    visibility = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(),
-                                        label='Steps Visibile')
-    download = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Download')
-    upload = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Upload')
-    step_file = forms.FileField(widget=forms.ClearableFileInput(
-        {'class': 'form-control form-control-lg', 'name': 'step_file'}), label='File for download')
+
+    
+    count = forms.FloatField(widget=forms.NumberInput(attrs={
+        'class': 'form-control',
+        'style': 'width: 40%;',
+        'placeholder': 'Ex. 1.0',
+    }),label='Step Number')
+
+    description = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'style': 'height:50px;',
+        'placeholder': 'Enter Step Description',
+    }),label='Description')
+
+    instruction = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter Detailed Step Instructions',
+        'rows':6, 'cols':15,
+    }),label='Instructions')
+
+    
+    visibility = forms.BooleanField( required=False, label='Step Visibile')
+
+    download = forms.BooleanField( required=False,  label='Download control visible')
+
+    step_file = forms.FileField(widget=forms.ClearableFileInput({
+        'class': 'form-control',
+        'name': 'step_file',
+        'style': 'width:70%;'
+        }), label='File for download')
+
+    upload = forms.BooleanField(required=False, label='Upload control visible')
 
     class Meta:
         model = Steps
@@ -21,16 +44,17 @@ class Stepsform(forms.ModelForm):
 
 
 class DocumentsForm(forms.ModelForm):
-    DISPLAY_Visibity_CHOICES = [
-        ('Yes', 'Yes'),
-        ('No', 'No')
-    ]
-    notarize = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Notarize',
-                                 initial={'notarize': 'No'})
-    apostille = forms.ChoiceField(choices=DISPLAY_Visibity_CHOICES, widget=forms.RadioSelect(), label='Apostille',
-                                  initial={'apostille': 'No'})
+    description = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'style': 'margin-bottom: 16px;',
+        'placeholder': 'Enter Standard File Description',
+    }),label='Description')
+   
     step_file = forms.FileField(widget=forms.ClearableFileInput(
-        {'class': 'form-control form-control-lg', 'name': 'step_document'}))
+        {'class': 'form-control',
+         'name': 'step_document',
+         'style': 'width:80%'
+         }), label='File')
 
     class Meta:
         model = Documents
