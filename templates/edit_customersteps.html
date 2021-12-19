@@ -7,24 +7,24 @@
         <div class="page-title-box">
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="/workflows">Standard Workflow</a></li>
-                      <li class="breadcrumb-item"><a href="{% url 'display_steps' project_template.id %}">Standard Workflow Steps</a></li>
-                      <li class="breadcrumb-item"> Edit Standard Workflow Steps</li>
+                    <li class="breadcrumb-item"><a href="/customerworkflows">Customer Workflow</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'customerworflow-steps' customerworkflow.id %}">Standard Workflow Steps</a></li>
+                      <li class="breadcrumb-item"> Edit Customer Workflow Steps</li>
                 </ol>
             </div>
-            <h4 class="page-title">Edit Standard Workflow Step</h4>
+            <h4 class="page-title">Edit Customer Workflow Step</h4>
         </div>
     </div>
 </div>
 <div class="row">
-    <p> {{project_template.description}}  
-        <span style="margin-left:6px;" class="badge bg-success">{{project_template.get_step_count}} Steps </span>
+    <p> {{customerworflow.description}}  
+        <span style="margin-left:6px;" class="badge bg-success">{{customerworflow.get_step_count}} Steps </span>
     </p>
      <p>Step: {{step.description}}</p>
     <div class="col-12">
         <div class="d-flex flex-column h-100 rounded-3 shadow-lg p-4">
             <div class="py-2 p-md-3">
-              <form method="post" action="{% url 'edit_steps' project_template.id step.id %}" enctype="multipart/form-data">
+              <form method="post" action="{% url 'edit-customerworflow-steps' customerworkflow.id step.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
                  {{form.count|as_crispy_field}}<br/>
                  {{form.description|as_crispy_field}}<br/>
@@ -35,7 +35,7 @@
                  {{form.upload|as_crispy_field}}
                  <br/>
               <div class="modal-footer">
-                  <a href="{% url 'display_steps' project_template.id %}">      
+                  <a href="{% url 'customerworflow-steps' customerworkflow.id %}">      
                       <button type="button" class="btn btn-secondary">Cancel</button>
                   </a>
                   <button type="submit" class="btn btn-primary">Save</button>

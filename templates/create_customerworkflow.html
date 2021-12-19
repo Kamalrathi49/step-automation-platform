@@ -1,15 +1,15 @@
 {% load crispy_forms_filters %}
 {% load i18n %}
 <!-- Modal -->
-<div class="modal fade" id="staticBackdropcreateworkflow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdropcreatecustomerworkflow" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h3 class="modal-title" id="staticBackdropLabel">Add Standard Workflow</h3>
+              <h3 class="modal-title" id="staticBackdropLabel">Add Customer Workflow</h3>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
           </div> <!-- end modal header -->
           <div class="modal-body">
-            <form action="{% url 'create_workflows' %}" method="post">
+            <form action="{% url 'create_customerworkflows' %}" method="post">
               {% csrf_token %}
                {{form|crispy}}
             </br>

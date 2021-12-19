@@ -1,0 +1,30 @@
+{% load crispy_forms_filters %}
+{% load i18n %}
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropcreatecustomersteps" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="staticBackdropLabel">Add Customer Workflow Step</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body">
+              <form action="{% url 'create-customerworflow-steps' customerworkflow.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 {{createform.count|as_crispy_field}}<br/>
+                 {{createform.description|as_crispy_field}}<br/>
+                 {{createform.instruction|as_crispy_field}}<br/>
+                 {{createform.visibility|as_crispy_field}}<br/>
+                 {{createform.download|as_crispy_field}}<br/>
+                 {{createform.step_file|as_crispy_field}}<br/>
+                 {{createform.upload|as_crispy_field}}
+                 <br/>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+              </div> 
+            </form>
+            </div>
+        </div> <!-- end modal content-->
+    </div> <!-- end modal dialog-->
+</div>

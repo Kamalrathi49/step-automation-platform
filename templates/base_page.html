@@ -5,7 +5,7 @@
 <head>
     {% load static %}
         <meta charset="utf-8" />
-        <title>Step Guide</title>
+        <title>Step Guide - Step by Step Guide</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -59,6 +59,7 @@
                                 <span> Dashboard </span>
                             </a>
                         </li>
+
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarresource" aria-expanded="false" aria-controls="sidebarresource" class="side-nav-link">
                                 <i class="mdi mdi-medal" aria-hidden="true"></i>
@@ -85,11 +86,32 @@
                                 </ul>
                             </div>
                         </li>
+
                         <li class="side-nav-item">
-                            <a href="/projects" class="side-nav-link">
-                                <i class="uil uil-folder-open"></i>
-                                <span> Projects </span>
+                            <a data-bs-toggle="collapse" href="#sidebarresource1" aria-expanded="false" aria-controls="sidebarresource1" class="side-nav-link">
+                                <i class="mdi mdi-face" aria-hidden="true"></i>
+                                <span> Customer </span>
+                                <span class="menu-arrow"></span>
                             </a>
+                            <div class="collapse" id="sidebarresource1">
+                                <ul class="side-nav-second-level" style="position: relative">
+                                    <!-- <li>
+                                        <a href="/documents/">
+                                            <i class="uil uil-file-alt"></i><span>Files</span></a>
+                                    </li> -->
+                                    <li>
+                                        <a href="/customerworkflows/"> <i class="uil uil-folder-open"></i> <span>Workflows</span></a>
+                                    </li>
+                                    {% if '/customerworflowsteps/' in request.path %}
+                                        <li>
+                                            <a class="m-1" href={{request.path}} >
+                                                <i class="uil-comments-alt"></i>
+                                                <span> Steps </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
                         </li>
                         <li class="side-nav-item">
                             <a href="/steps" class="side-nav-link">

@@ -15,10 +15,10 @@ from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To
 
-from .models import ProjectTemplate, UserData, UserFiles, Steps, Documents, Customers
+from .models import CustomerSteps, CustomerWorkflow, ProjectTemplate, UserData, UserFiles, Steps, Documents, Customers
 from .models import Country
 from userforms.models import UserForms
-from .forms import ProjectTemplateForm, Stepsform, DocumentsForm, CustomersForm
+from .forms import CustomerStepsform, CustomerWorkflowForm, ProjectTemplateForm, Stepsform, DocumentsForm, CustomersForm
 
 
 # landing page
@@ -474,11 +474,8 @@ def create_steps(request, project_template_pk):
             }
         )
 
-
-def edit_steps(request, steps_pk, project_template_pk):
+def edit_step(request, steps_pk, project_template_pk):
     user = User.objects.get(username=request.user)
-    project_template = ProjectTemplate.objects.get(pk=project_template_pk)
-
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
@@ -486,10 +483,10 @@ def edit_steps(request, steps_pk, project_template_pk):
     except UserData.DoesNotExist:
         profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
         username = request.user
-
+    project_template = ProjectTemplate.objects.get(id = project_template_pk)
+    step = Steps.objects.get(id=steps_pk, project_template__id = project_template_pk)
     if request.method == 'POST':
-        steps = Steps.objects.get(id = steps_pk, project_template_id = project_template_pk)
-        form = Stepsform(request.POST or None, instance = steps)
+        form = Stepsform(request.POST or None, instance=step)
         if form.is_valid():
             form.save()
             return redirect(f'/displaysteps/{project_template_pk}')
@@ -497,11 +494,10 @@ def edit_steps(request, steps_pk, project_template_pk):
             return redirect(f'/displaysteps/{project_template_pk}')
 
     else:
-        steps = Steps.objects.get(id = steps_pk, project_template_id = project_template_pk)
-        form = Stepsform(request.POST or None, instance = steps)
-        ctx = {'form': form, 'username': username, 'profilepic': profilepic,
-         'project_template': project_template }
+        form = Stepsform(request.POST or None, instance = step)
+        ctx = {'form': form, 'username': username, 'profilepic': profilepic, 'step': step, 'project_template': project_template}
         return render(request, 'edit_steps.html', ctx)
+
 
 
 def delete_steps(request, project_template_pk, steps_pk):
@@ -522,6 +518,7 @@ def display_steps(request, project_template_pk ):
     steps = Steps.objects.filter(project_template_id = project_template_pk)
     project_template = ProjectTemplate.objects.get(id = project_template_pk)
     form = Stepsform()
+    
     return render(
         request,
         'display_steps.html',
@@ -530,7 +527,7 @@ def display_steps(request, project_template_pk ):
             'profilepic': profilepic,
             'steps': steps,
             'project_template' : project_template,
-            'createform': form
+            'createform': form,
         }
     )
 
@@ -931,7 +928,6 @@ def edit_document(request, documents_pk):
             form.save()
             return redirect('/documents')
         else: 
-            print('------..----fail-------...-----')
             return redirect('/documents')
 
     else:
@@ -944,3 +940,208 @@ def edit_document(request, documents_pk):
 def delete_document(request, documents_pk):
     Documents.objects.get(pk=documents_pk).delete()
     return redirect('/documents')
+
+
+@login_required(login_url='/')
+def create_customersteps(request, customerworkflow_pk):
+    user = User.objects.get(username=request.user)
+    customerworkflow = CustomerWorkflow.objects.get(pk=customerworkflow_pk)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        print(profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+    if request.method == 'POST':
+        form = CustomerStepsform(request.POST, request.FILES)
+        if form.is_valid():
+            step = form.save(commit=False)
+            step.user = request.user
+            step.customerworkflow = customerworkflow
+            step.save()
+            form = CustomerStepsform()
+            return redirect(
+                    f'/customerworkflowsteps/{customerworkflow_pk}/'
+                )
+           
+        else:
+            form = CustomerStepsform()
+            return render(
+                request,
+                'create_customersteps.html',
+                {
+                    'username': username,
+                    'profilepic': profilepic,
+                    'form': form
+                }
+            )
+    else:
+        form = CustomerStepsform()
+        return render(
+            request,
+            'create_customersteps.html',
+            {
+                'username': username,
+                'profilepic': profilepic,
+                'customerworkflow' : customerworkflow,
+                'form': form
+            }
+        )
+
+def edit_customerstep(request, customersteps_pk, customerworkflow_pk):
+    user = User.objects.get(username=request.user)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+
+    customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
+    step = CustomerSteps.objects.get(id=customersteps_pk, customerworkflow_id = customerworkflow_pk)
+    if request.method == 'POST':
+        form = CustomerStepsform(request.POST or None, instance=step)
+        if form.is_valid():
+            form.save()
+            return redirect(f'/customerworkflowsteps/{customerworkflow_pk}/')
+        else: 
+            return redirect(f'/customerworkflowsteps/{customerworkflow_pk}/')
+
+    else:
+        form = CustomerStepsform(request.POST or None, instance = step)
+        ctx = {'form': form, 'username': username, 'profilepic': profilepic, 'step': step, 'customerworkflow': customerworkflow}
+        return render(request, 'edit_customersteps.html', ctx)
+
+
+def delete_customerstep(request, customersteps_pk, customerworkflow_pk):
+    steps = CustomerSteps.objects.get(id = customersteps_pk, customerworkflow_id = customerworkflow_pk).delete()
+    return redirect(f'/customerworkflowsteps/{customerworkflow_pk}/')
+
+
+@login_required(login_url='/')
+def display_customerstep(request, customerworkflow_pk ):
+    user = User.objects.get(username=request.user)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+    steps = CustomerSteps.objects.filter(customerworkflow_id = customerworkflow_pk)
+    customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
+    form = CustomerStepsform()
+    
+    return render(
+        request,
+        'display_customersteps.html',
+        {
+            'username': username,
+            'profilepic': profilepic,
+            'steps': steps,
+            'customerworkflow' : customerworkflow,
+            'createform': form,
+        }
+    )
+
+
+@login_required(login_url='/')
+def create_customerworkflow(request):
+    user = User.objects.get(username=request.user)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+
+    if request.method == 'POST':
+        form = CustomerWorkflowForm(request.POST)
+        if form.is_valid():
+            customerworkflow = form.save(commit=False)
+            customerworkflow.user = request.user
+            customerworkflow.save()
+            return redirect(
+                    '/customerworkflows'
+                )
+        else:
+            form = CustomerWorkflowForm()
+            return render(
+                request,
+                'create_customerworkflow.html',
+                {
+                    'username': username,
+                    'profilepic': profilepic,
+                    'form': form
+                }
+            )
+    else:
+        form = CustomerWorkflowForm()
+        return render(
+            request,
+            'create_customerworkflow.html',
+            {
+                'username': username,
+                'profilepic': profilepic,
+                'form': form
+            }
+        )
+
+
+def edit_customerworkflow(request, customerworkflow_pk):
+    user = User.objects.get(username=request.user)
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+    if request.method == 'POST':
+        customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
+        form = CustomerWorkflowForm(request.POST or None, instance = customerworkflow)
+        if form.is_valid():
+            form.save()
+            return redirect('/customerworkflows')
+        else: 
+            return redirect('/customerworkflows')
+
+    else:
+        customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
+        form = CustomerWorkflowForm(request.POST or None, instance = customerworkflow)
+        ctx = {'form': form, 'username': username, 'profilepic': profilepic }
+        return render(request, 'edit_customerworkflow.html', ctx)
+
+
+@login_required(login_url='/')
+def customerworkflow_details(request):
+    user = User.objects.get(username=request.user)
+    customerworkflow = CustomerWorkflow.objects.filter(user = user)
+    form = CustomerWorkflowForm
+    try:
+        userdata = UserData.objects.get(userrelation=user)
+        username = user.username
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        username = request.user
+    return render(
+        request,
+        'customerworkflow_detail.html',
+        {
+            'username': username,
+            'profilepic': profilepic,
+            'form': form,
+            'customerworkflow': customerworkflow,
+        }
+    ) 
+
+
+
+def delete_customerworkflow(request, customerworkflow_pk):
+    CustomerWorkflow.objects.get(pk=customerworkflow_pk).delete()
+    return redirect('/customerworkflows')

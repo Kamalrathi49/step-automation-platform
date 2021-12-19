@@ -1,0 +1,46 @@
+{% load crispy_forms_filters %}
+{% load i18n %}
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropeditcustomerworkflow{{workflow.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="staticBackdropLabel">Edit Customer Workflow</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body">
+                <form action="{% url 'edit_customerworkflows' workflow.id %}" method="POST" >
+                    {% csrf_token %} 
+                    <label for="customer">Customer Name</label>
+                    <input class="form-control mb-2" type="text" placeholder="Enter Customer Name"  value="{{workflow.customer}}" name="customer" required >
+                   
+                    <label for="description">Description</label>
+                    <input class="form-control mb-2" type="text" placeholder="Description"  value="{{workflow.description}}" name="description" required >
+                   
+                    <label for="_status">Status</label>
+                    <select id="_status" name="status"  class="form-control data-form">
+                      <option value="INVITE SENT">Invite sent</option>
+                      <option value="INVITE NOT SENT">Invite Not Sent</option>
+                      <option value="ONGOING">Ongoing</option>
+                      <option value="FINISHED">Finished</option>
+                      <option value="CANCELLED">Cancelled</option>
+                    </select>
+                
+                    <label for="lead">Lead</label>
+                    <select id="lead" name="lead"  class="form-control data-form">
+                      <option value="GUIDE">Guide</option>
+                      <option value="GUIDEE">Guidee</option>
+                      <option value="BACK OFFICE">Backoffice</option>
+                    </select>  
+                    
+
+                  <br/>  
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save</button>
+                  </div> 
+            </form>
+            </div>
+        </div> <!-- end modal content-->
+    </div> <!-- end modal dialog-->
+</div>

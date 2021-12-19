@@ -88,3 +88,28 @@ class Customers(models.Model):
 
 
 
+class CustomerWorkflow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.CharField(max_length=225)
+    description = models.CharField(max_length=225)
+    status = models.CharField(max_length=15)
+    lead = models.CharField(max_length=12)
+    added_date = models.DateField(auto_now_add=True)    
+
+
+    def __str__(self):
+        return self.description
+
+    def get_step_count(self):
+        return CustomerSteps.objects.filter(customerworkflow=self).count()
+
+class CustomerSteps(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    count = models.FloatField()
+    description = models.CharField(max_length=224)
+    instruction = models.TextField()
+    visibility = models.BooleanField(default=False)
+    download = models.BooleanField(default=False)
+    step_file = models.FileField(upload_to='customer_stepfiles')
+    upload = models.BooleanField(default=False)
+    customerworkflow = models.ForeignKey(CustomerWorkflow, on_delete=models.CASCADE, related_name='customerworkflow')

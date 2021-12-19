@@ -26,7 +26,7 @@
                     <p> {{project_template.description}}  
                         <span style="margin-left:6px;" class="badge bg-success">{{project_template.get_step_count}} Steps </span>
                     </p>
-                  <p>Lead: {{project_template.lead}}</p>
+                     <p>Lead: {{project_template.lead}}</p>
                   <div class="col-sm-4">
                       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropcreatesteps" ><i class="mdi mdi-plus-circle me-2"></i>Add Step</a>
                   </div>
@@ -102,9 +102,8 @@
                               </td>
                              
                               <td class="table-action">
-                                <btn style="cursor: pointer;" class="action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditstep{{step.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
-                                {% include 'edit_steps.html' %}
-                                  <a href="{% url 'delete_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                <a href="{% url 'edit_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                <a href="{% url 'delete_steps'  project_template.id step.id %}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                               </td>
                           </tr>
                           {% endfor %}
