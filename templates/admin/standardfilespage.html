@@ -21,7 +21,7 @@
                         <div class="row mb-2">
                             <div class="col-sm-4">
                                 <label for="search">Search:</label>
-                                <input class="rounded" name="search" placeholder="{{standardfilescount}} records..." type="search">
+                                <input class="" name="search" placeholder="{{standardfilescount}} records..." type="text">
                             </div>
                         </div>
 
@@ -29,12 +29,7 @@
                             <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="all" style="width: 20px;">
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="customCheck1">
-                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
-                                            </div>
-                                        </th>
+                                        <th class="all">#</th>
                                         <th>Description</th>
                                         <th>Added By</th>
                                         <th>Files</th>
@@ -44,11 +39,9 @@
                                 <tbody>
                                     {% for each in standardfiles %}
                                         <tr>
+                                           
                                             <td>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="customCheck13">
-                                                    <label class="form-check-label" for="customCheck13">&nbsp;</label>
-                                                </div>
+                                                {{forloop.counter}}.
                                             </td>
                                             <td>
                                                 {{each.description}}

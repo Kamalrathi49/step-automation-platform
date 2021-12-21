@@ -10,8 +10,9 @@ def dashboard(request):
 
 def accounts(request):
     users = User.objects.all()
+    userdata = UserData.objects.all()
     usercount = User.objects.all().count()
-    ctx = {'users': users, 'usercount': usercount}
+    ctx = {'users': users, 'usercount': usercount, 'userdata': userdata}
     return render(request, 'admin/accounts_page.html', ctx )
 
 def standardfiles(request):

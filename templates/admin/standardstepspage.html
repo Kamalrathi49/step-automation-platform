@@ -4,7 +4,6 @@
 <div class="row">
   <div class="col-12">
       <div class="page-title-box">
-          
           <h4 class="page-title">Standard Workflows Steps</h4>
       </div>
   </div>
@@ -18,7 +17,7 @@
               <div class="row mb-2">
                 <div class="col-sm-4">
                     <label for="search">Search:</label>
-                    <input class="rounded" name="search" placeholder="{{standardstepscount}} records..." type="search">
+                    <input class="" name="search" placeholder="{{standardstepscount}} records..." type="text">
                 </div>
                   <div class="col-sm-8">
                     <div class="text-sm-end">
@@ -32,7 +31,8 @@
                   <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
                       <thead class="table-light">
                           <tr>
-                              <th class="all">Step</th>
+                              <th class="all">#</th>
+                              <th>Step</th>
                               <th>Description</th>
                               <th>Instruction</th>
                               <th>File</th>
@@ -44,6 +44,9 @@
                       <tbody>
                           {% for step in standardsteps %}
                           <tr>
+                              <td>
+                                  {{forloop.counter}}.
+                              </td>
                               <td>
                                   {{step.count}}
                               </td>

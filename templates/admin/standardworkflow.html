@@ -16,7 +16,7 @@
                     <div class="row mb-2">
                         <div class="col-sm-4">
                             <label for="search">Search:</label>
-                            <input class="rounded" name="search" placeholder="{{workflowcount}} records..." type="search">
+                            <input class="" name="search" placeholder="{{workflowcount}} records..." type="search">
                         </div>
                         <div class="col-sm-8">
                             <div class="text-sm-end">
@@ -29,6 +29,7 @@
                         <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
                             <thead class="table-light">
                                 <tr>
+                                    <th class="all">#</th>
                                     <th>Description</th>
                                     <th>Steps</th>
                                     <th>Lead</th>
@@ -40,6 +41,9 @@
                                 {% for workflow in standardworkflows %}
                                 <tr>
                                     <td>
+                                        {{forloop.counter}}.
+                                    </td>
+                                    <td>
                                         {{workflow.description}}
                                     </td>
                                     <td>
@@ -49,7 +53,7 @@
                                         {{workflow.lead}}
                                     </td>
                                     <td>
-                                        {{workflow.user.username}}
+                                        {{workflow.user}}
                                     </td>
                                     <td>
                                         {{workflow.added_date}}
