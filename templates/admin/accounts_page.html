@@ -1,0 +1,88 @@
+{% extends 'base_page.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+      <div class="page-title-box">
+          <h4 class="page-title">Accounts</h4>
+      </div>
+  </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+              <div class="row mb-2">
+                  <div class="col-sm-4">
+                      <label for="search">Search:</label>
+                      <input class="rounded" name="search" placeholder="{{usercount}} records..." type="search">
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="text-sm-end">
+                        <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                        <button type="button" class="btn btn-light mb-2">Export</button>
+                    </div>
+                </div>  
+              </div>
+
+              <div class="table-responsive">
+                  <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                      <thead class="table-light">
+                          <tr>
+                              <th class="all">Type</th>
+                              <th>Account</th>
+                              <th>Industry</th>
+                              <th>Location</th>
+                              <th>Created</th>
+                              <th>Last Activity</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for user in users %}
+                          <tr>
+                              <td>
+                                {% if user.is_superuser %}
+                                    <p style="border: greenyellow; border-radius: 10%; color: greenyellow;">Administration</p>
+                                {% else %}
+                                    <p style="border: skyblue; border-radius: 10%; color: skyblue;">Guide</p>
+                                {% endif %}
+                            </td>
+                              <td>
+                                  {{user.username}}                                
+                              </td>
+                              <td>
+                                  Unknown
+                              </td>
+                              <td> 
+                                {{user.user_data.country}}
+                              </td>
+                              <td>
+                                 {{user.last_login.date }}
+                              </td>
+                              <td>
+                                 {{user.date_joined.date}}
+                              </td>
+                              <td>
+                                {% if user.is_active %}
+                                    <p class="m-0 d-inline-block align-middle font-16">
+                                        <span class="badge bg-success">Active</span>
+                                    </p>
+                                {% else %}
+                                <p class="m-0 d-inline-block align-middle font-16">
+                                    <span class="badge bg-danger"> Not Active</span>
+                                </p>
+                                {% endif %}
+                                  
+                              </td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div> <!-- end card-body-->
+      </div> <!-- end card-->
+  </div> <!-- end col -->
+</div>
+{% endblock %}

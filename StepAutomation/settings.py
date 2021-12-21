@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'userforms.apps.UserformsConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    'crispy_forms'
+    'crispy_forms',
+    'adminapp',
 ]
 
 # ==============================================================================
@@ -134,6 +135,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+# AUTH_USER_MODEL = 'stepautomationapp.User'
 
 # ==============================================================================
 # INTERNATIONALIZATION AND LOCALIZATION SETTINGS

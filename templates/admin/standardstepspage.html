@@ -1,0 +1,78 @@
+{% extends 'base_page.html' %}
+{% load stringspliceing %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+      <div class="page-title-box">
+          
+          <h4 class="page-title">Standard Workflows Steps</h4>
+      </div>
+  </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+              <div class="row mb-2">
+                <div class="col-sm-4">
+                    <label for="search">Search:</label>
+                    <input class="rounded" name="search" placeholder="{{standardstepscount}} records..." type="search">
+                </div>
+                  <div class="col-sm-8">
+                    <div class="text-sm-end">
+                        <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                        <button type="button" class="btn btn-light mb-2">Export</button>
+                    </div>
+                </div>  
+              </div>
+
+              <div class="table-responsive">
+                  <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                      <thead class="table-light">
+                          <tr>
+                              <th class="all">Step</th>
+                              <th>Description</th>
+                              <th>Instruction</th>
+                              <th>File</th>
+                              <th>Standard Workflow</th>
+                              <th>Created By</th>
+                              <th>Added On</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for step in standardsteps %}
+                          <tr>
+                              <td>
+                                  {{step.count}}
+                              </td>
+                              <td>
+                                  {{step.description}}                                
+                              </td>
+                              <td>
+                                  {{step.instruction}}
+                                </td>
+                                <td>
+                                  <a href="/media/{{step.step_file}}" target="_blank"> {{step.step_file | splicestring:10}}
+                                </td>
+                              <td> 
+                                  {{step.project_template}}
+                              </td>
+                              <td>
+                                   {{step.user}} 
+                              </td>
+                              <td>
+                                {{step.created_on}}
+                              </td>
+                             
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div> <!-- end card-body-->
+      </div> <!-- end card-->
+  </div> <!-- end col -->
+</div>
+{% endblock %}

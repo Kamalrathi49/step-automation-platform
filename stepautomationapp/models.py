@@ -1,11 +1,10 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from PIL import Image
 
-
 class UserData(models.Model):
-    userrelation = models.ForeignKey(User, on_delete=models.CASCADE)
+    userrelation = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_data')
     country = models.CharField(max_length=225, null=True, blank=True)
     city = models.CharField(max_length=225, null=True, blank=True)
     profilepic = models.ImageField(upload_to='media', default='media/profilepic.png')
@@ -62,6 +61,7 @@ class Steps(models.Model):
     download = models.BooleanField(default=False)
     step_file = models.FileField(upload_to='stepfiles')
     upload = models.BooleanField(default=False)
+    created_on = models.DateField(auto_now_add=True)
     project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
 
 

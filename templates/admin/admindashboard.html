@@ -1,0 +1,19 @@
+{% extends 'base_page.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="adminuser/dashboard">Home</a></li>
+                    </ol>
+                </div>
+                <h1 class="page-title">Dashboard</h1>
+                {% for user in users %}
+                    <h1>{{user.email}}</h1>
+                {% endfor %}
+                <h1></h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}

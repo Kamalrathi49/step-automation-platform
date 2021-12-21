@@ -4,5 +4,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('stepautomationapp.urls')),
+    path('adminuser/', include('adminapp.urls')),
     path('forms/',include('userforms.urls')),
 ]

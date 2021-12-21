@@ -24,7 +24,9 @@ from .forms import CustomerStepsform, CustomerWorkflowForm, ProjectTemplateForm,
 # landing page
 def index(request):
     # if user is authenticated it will redirect to dashboard
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_superuser :
+        return redirect('adminuser/dashboard')
+    elif request.user.is_authenticated :
         return redirect('/dashboard')
     else:
         return render(
@@ -315,7 +317,7 @@ def get_project_details(request, projectName):
         )
 
 
-# to send the forget password link to the user registered email
+# to send the et password link to the user registered email
 def forgetPassword(request):
     if request.method == 'POST':
         email = request.POST.get('email')

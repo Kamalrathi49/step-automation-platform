@@ -1,5 +1,7 @@
+from django.contrib.auth.models import User
+from django.db.models import fields
 from django.forms.widgets import CheckboxInput
-from .models import  CustomerSteps, CustomerWorkflow, ProjectTemplate, Steps, Documents, Customers
+from .models import  *
 from django import forms
 
 CHOICE_LEAD = [
@@ -166,3 +168,4 @@ class CustomerStepsform(forms.ModelForm):
         model = CustomerSteps
         exclude = ['user', 'customerworkflow']
         fields = '__all__'
+

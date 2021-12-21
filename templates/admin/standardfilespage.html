@@ -1,0 +1,77 @@
+{% extends 'base_page.html' %}
+{% load static %}
+{% load stringspliceing %}
+{% block style %}
+    <!-- third party css -->
+        <link href="{% static 'assets/css/vendor/dataTables.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/css/vendor/responsive.bootstrap5.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block content %}
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">Standard Files</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                                <label for="search">Search:</label>
+                                <input class="rounded" name="search" placeholder="{{standardfilescount}} records..." type="search">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="all" style="width: 20px;">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                <label class="form-check-label" for="customCheck1">&nbsp;</label>
+                                            </div>
+                                        </th>
+                                        <th>Description</th>
+                                        <th>Added By</th>
+                                        <th>Files</th>
+                                        <th>Added Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for each in standardfiles %}
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="customCheck13">
+                                                    <label class="form-check-label" for="customCheck13">&nbsp;</label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{each.description}}
+                                            </td>
+                                            <td>
+                                                {{each.user}}
+                                            </td>
+                                            <td>
+                                                <a href="/media/{{each.step_file}}" target="_blank">{{each.step_file | splicestring:10}}</a>
+                                            </td>
+                                            <td>
+                                                {{each.file_add_date | date}}
+                                            </td>
+                                           
+                                        </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+{% endblock %}
