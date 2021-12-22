@@ -1,0 +1,20 @@
+<form class="needs-validation" novalidate method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <input class="form-control" type="text" placeholder="Email" name="email" id="email" required>
+    </div>
+    <div class="mb-3 password-toggle">
+      <input class="form-control" type="password" placeholder="Password" name="password" id="password" required>
+      <label class="password-toggle-btn" aria-label="Show/hide password">
+        <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+      </label>
+    </div>
+    <div class="mb-3 password-toggle">
+      <input class="form-control" type="password" placeholder="Confirm password" name="cpassword" id="cpassword" required>
+      <label class="password-toggle-btn" aria-label="Show/hide password">
+        <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+      </label>
+    </div>
+    <button class="btn btn-primary d-block w-100" type="submit" id="submitb">Sign up</button>
+    <p class="fs-sm pt-3 mb-0">Already have an account? <a href='#' class='fw-medium' data-view='#modal-signin-view'>Sign in</a></p>
+  </form>

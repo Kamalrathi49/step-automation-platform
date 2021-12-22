@@ -1,0 +1,74 @@
+{% extends 'base_page.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Customer Workflows</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <label for="search">Search:</label>
+                            <input class="" name="search" placeholder="{{customerworkflowcount}} records..." type="search">
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end">
+                                <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                                <button type="button" class="btn btn-light mb-2">Export</button>
+                            </div>
+                        </div><!-- end col-->
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="all">#</th>
+                                    <th>Description</th>
+                                    <th>Steps</th>
+                                    <th>Customer</th>
+                                    <th>Lead</th>
+                                    <th>Created By</th>
+                                    <th>Added Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workflow in customerworkflows %}
+                                <tr>
+                                    <td>
+                                        {{forloop.counter}}.
+                                    </td>
+                                    <td>
+                                        {{workflow.description}}
+                                    </td>
+                                    <td>
+                                        {{workflow.get_step_count}}
+                                    </td>
+                                    <td>
+                                        {{workflow.customer}}
+                                    </td>
+                                    <td>
+                                        {{workflow.lead}}
+                                    </td>
+                                    <td>
+                                        {{workflow.user}}
+                                    </td>
+                                    <td>
+                                        {{workflow.added_date}}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div>
+{% endblock %}

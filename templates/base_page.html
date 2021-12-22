@@ -70,19 +70,28 @@
                                 <ul class="side-nav-second-level" style="position: relative">
                                     <li>
                                         <a href="{% url 'admin-accounts' %}">
-                                            <i class="uil uil-file-alt"></i><span>Accounts</span></a>
+                                            <i class="uil uil-user"></i><span>Accounts</span></a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin-standardfiles' %}"> <i class="uil uil-folder-open"></i>
+                                        <a href="{% url 'admin-standardfiles' %}"> <i class="uil uil-file-alt"></i>
                                              <span>Standard Files</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'admin-standardsteps' %}">  <i class="uil-comments-alt"></i>
-                                             <span>Standard Steps</span></a>
                                     </li>
                                     <li>
                                         <a href="{% url 'admin-standardworkflows' %}">  <i class="uil-folder-open"></i>
                                              <span>Standard Workflows</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'admin-standardsteps' %}">  <i class="uil-comments-alt"></i>
+                                             <span>Standard Workflow Steps</span></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="{% url 'admin-customerworkflows' %}">  <i class="uil-folder-open"></i>
+                                             <span>Customer Workflows</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'admin-customerworkflowsteps' %}">  <i class="uil-comments-alt"></i>
+                                             <span>Customer Workflows Steps</span></a>
                                     </li>
                                 </ul>
                             </div>

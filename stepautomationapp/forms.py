@@ -11,29 +11,22 @@ CHOICE_LEAD = [
     ]
 
 class Stepsform(forms.ModelForm):
-
-    
     count = forms.FloatField(widget=forms.NumberInput(attrs={
         'class': 'form-control',
         'style': 'width: 40%;',
         'placeholder': 'Ex. 1.0',
     }),label='Step Number')
-
     description = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'style': 'height:50px;',
         'placeholder': 'Enter Step Description',
     }),label='Description')
-
     instruction = forms.CharField(widget=forms.Textarea(attrs={
         'class': 'form-control',
         'placeholder': 'Enter Detailed Step Instructions',
         'rows':6, 'cols':15,
     }),label='Instructions')
-
-    
     visibility = forms.BooleanField( required=False, label='Step Visibile')
-
     download = forms.BooleanField( required=False,  label='Download control visible')
 
     step_file = forms.FileField(widget=forms.ClearableFileInput({
@@ -41,7 +34,6 @@ class Stepsform(forms.ModelForm):
         'name': 'step_file',
         'style': 'width:70%;'
         }), label='File for download')
-
     upload = forms.BooleanField(required=False, label='Upload control visible')
 
     class Meta:
@@ -56,7 +48,6 @@ class DocumentsForm(forms.ModelForm):
         'style': 'margin-bottom: 16px;',
         'placeholder': 'Enter Standard File Description',
     }),label='Description')
-   
     step_file = forms.FileField(widget=forms.ClearableFileInput(
         {'class': 'form-control',
          'name': 'step_document',
@@ -83,7 +74,6 @@ class ProjectTemplateForm(forms.ModelForm):
         'style': 'margin-bottom: 20px;',
         'placeholder': 'Enter Standard Workflow Name'
     }))
-
     lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(attrs={
         'class': 'form-control',
         'style': 'cursor: pointer;',
@@ -108,19 +98,11 @@ class CustomerWorkflowForm(forms.ModelForm):
         'class': 'form-control',
         'style': 'cursor: pointer; margin-botton:16px;',
         }), label='Status')
-    
-    customer  = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'style': 'margin-bottom: 16px;',
-        'placeholder': 'Enter Customer Name'
-    }), label='Customer Name')
-
     description  = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'style': 'margin-bottom: 16px;',
+        'style': 'margin-bottom:;',
         'placeholder': 'Enter Customer Workflow Name'
     }))
-
     lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(attrs={
         'class': 'form-control',
         'style': 'cursor: pointer;',
@@ -138,30 +120,23 @@ class CustomerStepsform(forms.ModelForm):
         'style': 'width: 40%;',
         'placeholder': 'Ex. 1.0',
     }),label='Step Number')
-
     description = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'style': 'height:50px;',
         'placeholder': 'Enter Step Description',
     }),label='Description')
-
     instruction = forms.CharField(widget=forms.Textarea(attrs={
         'class': 'form-control',
         'placeholder': 'Enter Detailed Step Instructions',
         'rows':6, 'cols':15,
     }),label='Instructions')
-
-    
     visibility = forms.BooleanField( required=False, label='Step Visibile')
-
     download = forms.BooleanField( required=False,  label='Download control visible')
-
     step_file = forms.FileField(widget=forms.ClearableFileInput({
         'class': 'form-control',
         'name': 'step_file',
         'style': 'width:70%;'
         }), label='File for download')
-
     upload = forms.BooleanField(required=False, label='Upload control visible')
 
     class Meta:

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'adminapp',
     'django_countries',
+    'accountsapp',
 ]
 
 # ==============================================================================
@@ -136,7 +137,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-# AUTH_USER_MODEL = 'stepautomationapp.User'
+# AUTH_USER_MODEL = 'accountsapp.User'
 
 # ==============================================================================
 # INTERNATIONALIZATION AND LOCALIZATION SETTINGS

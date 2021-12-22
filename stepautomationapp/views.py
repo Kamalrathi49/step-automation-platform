@@ -476,6 +476,7 @@ def create_steps(request, project_template_pk):
             }
         )
 
+@login_required(login_url='/')
 def edit_step(request, steps_pk, project_template_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -501,7 +502,7 @@ def edit_step(request, steps_pk, project_template_pk):
         return render(request, 'edit_steps.html', ctx)
 
 
-
+@login_required(login_url='/')
 def delete_steps(request, project_template_pk, steps_pk):
     steps = Steps.objects.get(id = steps_pk, project_template_id = project_template_pk).delete()
     return redirect(f'/displaysteps/{project_template_pk}')
@@ -676,13 +677,15 @@ def customers_details(request):
         profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
         username = request.user
     customers = Customers.objects.filter(user=request.user.username)
+    form = CustomersForm()
     return render(
         request,
         'customers.html',
         {
             'username': username,
             'profilepic': profilepic,
-            'customers': customers
+            'customers': customers,
+            'form': form
         }
     )
 
@@ -787,7 +790,7 @@ def create_customer(request):
         form = CustomersForm(request.POST)
         if form.is_valid():
             customer = form.save(commit=False)
-            customer.user = request.user.username
+            customer.user = request.user
             customer.save()
             return redirect('/customers')
         else:
@@ -880,7 +883,7 @@ def create_project_template(request):
             }
         )
 
-
+@login_required(login_url='/')
 def edit_project_template(request, project_template_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -907,12 +910,12 @@ def edit_project_template(request, project_template_pk):
         return render(request, 'edit_project_template.html', ctx)
 
     
-
+@login_required(login_url='/')
 def delete_project_template(request, project_template_pk):
     ProjectTemplate.objects.get(pk=project_template_pk).delete()
     return redirect('/workflows')
 
-
+@login_required(login_url='/')
 def edit_document(request, documents_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -938,7 +941,7 @@ def edit_document(request, documents_pk):
         return render(request, 'edit_document.html', ctx)
 
 
-
+@login_required(login_url='/')
 def delete_document(request, documents_pk):
     Documents.objects.get(pk=documents_pk).delete()
     return redirect('/documents')
@@ -991,7 +994,7 @@ def create_customersteps(request, customerworkflow_pk):
                 'form': form
             }
         )
-
+@login_required(login_url='/')
 def edit_customerstep(request, customersteps_pk, customerworkflow_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -1093,7 +1096,7 @@ def create_customerworkflow(request):
             }
         )
 
-
+@login_required(login_url='/')
 def edit_customerworkflow(request, customerworkflow_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -1143,7 +1146,7 @@ def customerworkflow_details(request):
     ) 
 
 
-
+@login_required(login_url='/')
 def delete_customerworkflow(request, customerworkflow_pk):
     CustomerWorkflow.objects.get(pk=customerworkflow_pk).delete()
     return redirect('/customerworkflows')

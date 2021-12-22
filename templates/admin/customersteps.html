@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-12">
       <div class="page-title-box">
-          <h4 class="page-title">Standard Workflows Steps</h4>
+          <h4 class="page-title">Customer Workflows Steps</h4>
       </div>
   </div>
 </div>
@@ -16,7 +16,7 @@
               <div class="row mb-2">
                 <div class="col-sm-4">
                     <label for="search">Search:</label>
-                    <input class="" name="search" placeholder="{{standardstepscount}} records..." type="text">
+                    <input class="" name="search" placeholder="{{customerstepscount}} records..." type="text">
                 </div>
                   <div class="col-sm-8">
                     <div class="text-sm-end">
@@ -35,13 +35,13 @@
                               <th>Description</th>
                               <th>Instruction</th>
                               <th>File</th>
-                              <th>Standard Workflow</th>
+                              <th>Customer Workflow</th>
                               <th>Created By</th>
                               <th>Added On</th>
                           </tr>
                       </thead>
                       <tbody>
-                          {% for step in standardsteps %}
+                          {% for step in customersteps %}
                           <tr>
                               <td>
                                   {{forloop.counter}}.
@@ -59,13 +59,13 @@
                                   <a href="/media/{{step.step_file}}" target="_blank"> {{step.step_file | splicestring:10}}
                                 </td>
                               <td> 
-                                  {{step.project_template}}
+                                  {{step.customerworkflow}}
                               </td>
                               <td>
                                    {{step.user}} 
                               </td>
                               <td>
-                                {{step.created_on}}
+                                  {{step.created_on}}
                               </td>
                              
                           </tr>

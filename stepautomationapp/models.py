@@ -87,12 +87,15 @@ class Customers(models.Model):
     location = models.CharField(max_length=225)
     customer_added_date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.customer_name
+
 
 
 class CustomerWorkflow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    customer = models.CharField(max_length=225)
     description = models.CharField(max_length=225)
+    customer = models.ForeignKey(Customers, on_delete=models.CASCADE, related_name='customer')
     status = models.CharField(max_length=20)
     lead = models.CharField(max_length=12)
     added_date = models.DateField(auto_now_add=True)    

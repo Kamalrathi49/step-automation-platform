@@ -1,7 +1,5 @@
 from django.urls import path
-from django.conf import settings
 from . import views
-from django.conf.urls.static import static
 
 urlpatterns = [
         path('dashboard/', views.dashboard, name='admin-dashboard'),
@@ -9,4 +7,6 @@ urlpatterns = [
         path('standardfiles/', views.standardfiles, name='admin-standardfiles'),
         path('standardsteps/', views.standardsteps, name='admin-standardsteps'),
         path('standardworklows/', views.standardworkflows, name='admin-standardworkflows'),
+        path('customerworklows/', views.customerworkflows, name='admin-customerworkflows'),
+        path('customerworklowsteps/', views.customersteps, name='admin-customerworkflowsteps'),
 ]

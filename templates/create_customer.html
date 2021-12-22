@@ -1,34 +1,24 @@
-{% extends 'base_page.html' %}
 {% load crispy_forms_filters %}
 {% load i18n %}
-{% block content %}
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                          <li class="breadcrumb-item"><a href="/customers">Customers</a></li>
-                          <li class="breadcrumb-item">Add Customer</li>
-                    </ol>
-                </div>
-                <h4 class="page-title">Add Customer</h4>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropcreatecustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="staticBackdropLabel">Add Customer</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div> <!-- end modal header -->
+            <div class="modal-body">
+              <form action="{% url 'create_customer' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 {{form|crispy}}
+                 <br/>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+              </div> 
+            </form>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex flex-column h-100 rounded-3 shadow-lg p-4">
-              <div class="py-2 p-md-3">
-                  <form method="post">
-                      {% csrf_token %}
-                      {{ form | crispy }}
-                      <br/>
-                      <button type="submit" class="btn btn-success">{% trans 'Add' %}</button>
-                      <a href="/customers"><button type="button" class="btn btn-success">{% trans 'Cancel' %}</button></a>
-                  </form>
-              </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+        </div> <!-- end modal content-->
+    </div> <!-- end modal dialog-->
+</div>
