@@ -70,7 +70,10 @@ def signin(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 auth_login(request, user)
-                return redirect('/adminuser/dashboard')
+                if user.is_superuser:
+                    return redirect('/adminuser/dashboard')
+                else: 
+                    return redirect('/dashboard')
                 
             else:
                 return redirect('/')
