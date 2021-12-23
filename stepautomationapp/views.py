@@ -63,18 +63,16 @@ def delete_account(request):
 def signin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        print('--------keep going 1------', form.errors)
         if form.is_valid(): 
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user:
                 auth_login(request, user)
-                if user.is_superuser:
-                    return redirect('/adminuser/dashboard')
-                else:
-                    return redirect('/dashboard')
+                return redirect('/adminuser/dashboard')
+                
             else:
-                print('--------fail---------', form.errors)
                 return redirect('/')
         else :
             return redirect('/')
