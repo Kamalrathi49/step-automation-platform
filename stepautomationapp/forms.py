@@ -86,6 +86,7 @@ class ProjectTemplateForm(forms.ModelForm):
    
 
 class CustomerWorkflowForm(forms.ModelForm):
+    
     CHOICE_STATUS = [
             ('INVITE SENT', 'Invite Sent'),
             ('INVITE NOT SENT', 'Invite not sent'),
@@ -93,7 +94,7 @@ class CustomerWorkflowForm(forms.ModelForm):
             ('FINISHED', 'Finished'),
             ('CANCELLED', 'Cancelled'),
     ]
-
+    
     status = forms.ChoiceField(choices=CHOICE_STATUS, widget=forms.Select(attrs={
         'class': 'form-control',
         'style': 'cursor: pointer; margin-botton:16px;',
@@ -111,6 +112,11 @@ class CustomerWorkflowForm(forms.ModelForm):
         model = CustomerWorkflow
         exclude = ('user',)
         fields = '__all__'
+
+    def __init__(self,user,*args,**kwargs):
+        super (CustomerWorkflowForm,self ).__init__(*args,**kwargs)
+        self.fields['customer'].queryset = Customers.objects.filter(user=user)
+
 
 class CustomerStepsform(forms.ModelForm):
 

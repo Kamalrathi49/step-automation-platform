@@ -98,7 +98,7 @@ class CustomerWorkflow(models.Model):
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE, related_name='customer')
     status = models.CharField(max_length=20)
     lead = models.CharField(max_length=12)
-    added_date = models.DateField(auto_now_add=True)    
+    added_date = models.DateField(auto_now_add=True)   
 
 
     def __str__(self):
@@ -116,4 +116,5 @@ class CustomerSteps(models.Model):
     download = models.BooleanField(default=False)
     step_file = models.FileField(upload_to='customer_stepfiles')
     upload = models.BooleanField(default=False)
+    added_date = models.DateField(auto_now_add=True)   
     customerworkflow = models.ForeignKey(CustomerWorkflow, on_delete=models.CASCADE, related_name='customerworkflow')

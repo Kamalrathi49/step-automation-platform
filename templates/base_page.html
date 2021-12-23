@@ -81,17 +81,21 @@
                                              <span>Standard Workflows</span></a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin-standardsteps' %}">  <i class="uil-comments-alt"></i>
+                                        <a href="{% url 'admin-standardsteps' %}">  <i class="uil uil-comments-alt"></i>
                                              <span>Standard Workflow Steps</span></a>
                                     </li>
                                     
                                     <li>
-                                        <a href="{% url 'admin-customerworkflows' %}">  <i class="uil-folder-open"></i>
+                                        <a href="{% url 'admin-customerworkflows' %}">  <i class="uil uil-folder-open"></i>
                                              <span>Customer Workflows</span></a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'admin-customerworkflowsteps' %}">  <i class="uil-comments-alt"></i>
+                                        <a href="{% url 'admin-customerworkflowsteps' %}">  <i class="uil uil-comments-alt"></i>
                                              <span>Customer Workflows Steps</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'admin-customers' %}">  <i class="uil uil-user"></i>
+                                             <span>Customers</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -667,7 +671,7 @@
 
         <div class="rightbar-overlay"></div>
         <!-- /End-bar -->
-
+        
         {% endblock body %}
         <!-- bundle -->
         <script src="{% static 'assets/js/vendor.min.js' %}"></script>

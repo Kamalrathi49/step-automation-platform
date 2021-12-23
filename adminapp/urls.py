@@ -9,4 +9,5 @@ urlpatterns = [
         path('standardworklows/', views.standardworkflows, name='admin-standardworkflows'),
         path('customerworklows/', views.customerworkflows, name='admin-customerworkflows'),
         path('customerworklowsteps/', views.customersteps, name='admin-customerworkflowsteps'),
+        path('customers/', views.customers, name='admin-customers'),
 ]

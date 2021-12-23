@@ -81,9 +81,10 @@
                                             <span class="badge bg-success">Active</span>
                                         </td>
 
-                                        <td class="table-action">
+                                        <td class="table-action d-flex ">
                                             <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-eye"></i></a>
-                                            <a href="/editcustomer/{{customer.id}}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <btn class="btn action-icon" data-bs-toggle="modal" data-bs-target="#staticBackdropeditcustomer{{customer.id}}"> <i class="mdi mdi-square-edit-outline"></i></btn>
+                                            {% include 'edit_customer.html' %}
                                             <a href="/deletecustomer/{{customer.id}}" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                         </td>
                                     </tr>

@@ -2,6 +2,8 @@
 <html lang="en">
     <head>
         {% load static %}
+        {% load crispy_forms_filters %}
+        {% load i18n %}
         <meta charset="utf-8">
         <title>Landing Page | Hyper - Responsive Bootstrap 5 Admin Dashboard</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,17 +49,17 @@
                     <p class="fs-ms text-muted">Sign in to your account using email and password provided during registration.</p>
                     <p id="login-msg"></p>
                     <div id="loader1" class="lds-dual-ring hidden overlay" style="width:100%;height: 100%"></div>
-                    <form class="needs-validation" novalidate action="signin" method="post">
+                    <form class="needs-validation" novalidate action="{% url 'signin' %}" method="post">
                       {% csrf_token %}
                       <div class="mb-3">
                         <div class="input-group"><i class="ai-mail position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                          <input class="form-control rounded" type="email" placeholder="Email" name="email" id="emaill" autocomplete="false" required>
+                            {{loginform.username}}
                         </div>
                       </div>
                       <div class="mb-3">
                         <div class="input-group"><i class="ai-lock position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                           <div class="password-toggle w-100">
-                            <input class="form-control" type="password" placeholder="Password" name="password" id="passwordl" required>
+                            {{loginform.password}}
                             <label class="password-toggle-btn" aria-label="Show/hide password">
                               <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
                             </label>
@@ -87,7 +89,7 @@
                     <form class="needs-validation" novalidate method="post">
                       {% csrf_token %}
                       <div class="mb-3">
-                        <input class="form-control" type="text" placeholder="Email"z name="email" id="email" required>
+                        <input class="form-control" type="text" placeholder="Email" name="email" id="email" required>
                       </div>
                       <div class="mb-3 password-toggle">
                         <input class="form-control" type="password" placeholder="Password" name="password" id="password" required>

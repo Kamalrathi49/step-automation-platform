@@ -41,7 +41,7 @@ urlpatterns = [
     path('customerworkflows/<int:customerworkflow_pk>/editstep/<int:customersteps_pk>/', views.edit_customerstep, name='edit-customerworflow-steps'),
     path('customerworkflows/<int:customerworkflow_pk>/deletestep/<int:customersteps_pk>/', views.delete_customerstep, name='delete-customerworflow-steps'),
     path('createcustomer/', views.create_customer, name='create_customer'),
-    path('editcustomer/<int:customer_id>', views.edit_customer),
+    path('editcustomer/<int:customer_id>', views.edit_customer, name='edit_customer'),
     path('deletecustomer/<int:customer_id>', views.delete_customer),
     path('createworkflows', views.create_project_template, name='create_workflows'),
     path('editworkflows/<int:project_template_pk>/', views.edit_project_template, name='edit_workflows'),

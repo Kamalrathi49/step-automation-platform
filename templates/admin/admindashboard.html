@@ -8,12 +8,41 @@
                         <li class="breadcrumb-item"><a href="adminuser/dashboard">Home</a></li>
                     </ol>
                 </div>
-                <h1 class="page-title">Dashboard</h1>
-                {% for user in users %}
-                    <h1>{{user.email}}</h1>
-                {% endfor %}
-                <h1></h1>
+                <h1 class="page-title">Admin Dashboard</h1>
             </div>
         </div>
     </div>
+
+    <div class="card card-body" id="container" style="width: 50%;">
+        <p class="card-title"> Total Accounts</p>
+        <canvas id="pie-chart"></canvas>
+      </div>
+    
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+      <script>
+
+        var config = {
+          type: 'doughnut',
+          data: {
+            datasets: [{
+              data: {{ userdata|safe }},
+              backgroundColor: [
+                'red', 'lightblue', 'lightgreen'
+              ],
+              
+            }],
+            labels: {{ userlabels|safe }},
+          },
+          options: {
+            responsive: true
+          }
+        };
+    
+        window.onload = function() {
+          var ctx = document.getElementById('pie-chart').getContext('2d');
+          window.myPie = new Chart(ctx, config);
+        };
+    
+      </script>
+    
 {% endblock %}

@@ -2,13 +2,30 @@ from django.shortcuts import render
 from stepautomationapp.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 
 @login_required(login_url='/')
 def dashboard(request):
-    users = User.objects.all()
-    ctx = {'users':users}
-    return render( request, 'admin/admindashboard.html', ctx)
+    labels = ['Guide', 'Admin', 'Guidee']
+    admin = []
+    general = []
+    data = []
+    queryset = User.objects.all()
+    totaluser = User.objects.all().count()
+    for user in queryset:
+            if user.is_superuser:
+                admin.append(user.username)
+            else: 
+                general.append(user.username)
+    data.append(len(general)), data.append(len(admin)), data.append(4)
+
+    return render(request, 'admin/admindashboard.html', {
+        'userlabels': labels,
+        'userdata': data,
+        'totaluser': totaluser
+        
+    })
 
 @login_required(login_url='/')
 def accounts(request):
@@ -20,35 +37,43 @@ def accounts(request):
 
 @login_required(login_url='/')
 def standardfiles(request):
-    standardfiles = Documents.objects.all()
+    standardfiles = Documents.objects.all().order_by('-file_add_date')
     standardfilescount = Documents.objects.all().count()
     ctx = {'standardfiles': standardfiles, 'standardfilescount': standardfilescount}
     return render(request, 'admin/standardfilespage.html', ctx )
 
 @login_required(login_url='/')
 def standardsteps(request):
-    standardsteps = Steps.objects.all()
+    standardsteps = Steps.objects.all().order_by('-created_on')
     standardstepscount = Steps.objects.all().count()
     ctx = {'standardsteps': standardsteps, 'standardstepscount': standardstepscount}
     return render(request, 'admin/standardstepspage.html', ctx )
 
 @login_required(login_url='/')
 def standardworkflows(request):
-    standardworkflow = ProjectTemplate.objects.all()
+    standardworkflow = ProjectTemplate.objects.all().order_by('-added_date')
     standardworkflowcount = ProjectTemplate.objects.all().count()
     ctx = {'standardworkflows': standardworkflow, 'workflowcount': standardworkflowcount}
     return render(request, 'admin/standardworkflow.html', ctx )
 
 @login_required(login_url='/')
 def customerworkflows(request):
-    customerworkflow = CustomerWorkflow.objects.all()
+    customerworkflow = CustomerWorkflow.objects.all().order_by('-added_date')
     customerworkflowcount = CustomerWorkflow.objects.all().count()
     ctx = {'customerworkflows': customerworkflow, 'customerworkflowcount': customerworkflowcount}
     return render(request, 'admin/customerworkflow_page.html', ctx )
 
 @login_required(login_url='/')
 def customersteps(request):
-    customersteps = CustomerSteps.objects.all()
+    customersteps = CustomerSteps.objects.all().order_by('-added_date')
     customerstepscount = CustomerSteps.objects.all().count()
     ctx = {'customersteps': customersteps, 'customerstepscount': customerstepscount}
     return render(request, 'admin/customersteps.html', ctx )
+
+@login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser)
+def customers(request):
+    customers = Customers.objects.all().order_by('customer_name')
+    customercount = Customers.objects.all().count()
+    ctx = {'customers': customers, 'customercount': customercount}
+    return render(request, 'admin/customers_page.html', ctx )

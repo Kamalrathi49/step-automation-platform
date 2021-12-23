@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 import json
+from django.contrib.auth import views as auth_views
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.hashers import check_password
 from rest_framework.authtoken.models import Token
 from rest_framework import permissions
@@ -15,24 +17,26 @@ from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To
 
-from .models import CustomerSteps, CustomerWorkflow, ProjectTemplate, UserData, UserFiles, Steps, Documents, Customers
+from .models import *
 from .models import Country
 from userforms.models import UserForms
-from .forms import CustomerStepsform, CustomerWorkflowForm, ProjectTemplateForm, Stepsform, DocumentsForm, CustomersForm
+from .forms import *
+from accountsapp.forms import *
 
 
 # landing page
 def index(request):
+    form = LoginForm()
     # if user is authenticated it will redirect to dashboard
     if request.user.is_authenticated and request.user.is_superuser :
-        return redirect('adminuser/dashboard')
-    elif request.user.is_authenticated :
+        return redirect('/adminuser/dashboard')
+    elif request.user.is_authenticated and not request.user.is_superuser:
         return redirect('/dashboard')
     else:
         return render(
             request,
             'demo-web-studio.html',
-            {}
+            {'loginform': form}
         )
 
 
@@ -58,23 +62,27 @@ def delete_account(request):
 # check the user is authenticated or not
 def signin(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        keepsignin = request.POST.get('keepsignin')
-        print(keepsignin)
-        try:
-            users = User.objects.get(email=username)
-            if check_password(password, users.password):
-                login(request, users)
-                return HttpResponse(json.dumps({'status_msg': 'Ok'}),
-                                    content_type='application/json')
+        form = LoginForm(request.POST)
+        if form.is_valid(): 
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                auth_login(request, user)
+                if user.is_superuser:
+                    return redirect('/adminuser/dashboard')
+                else:
+                    return redirect('/dashboard')
             else:
-                return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Username or Password'}),
-                                    content_type='application/json')
-        except User.DoesNotExist:
-            return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Username or Password'}),
-                                content_type='application/json')
-
+                print('--------fail---------', form.errors)
+                return redirect('/')
+        else :
+            return redirect('/')
+    else:
+        form = LoginForm()
+        ctx = {'form' : form}
+        return render(request, 'accounts/login.html', ctx)
+    
 
 # creating new user
 def signup(request):
@@ -705,7 +713,7 @@ def edit_customer(request, customer_id):
         form = CustomersForm(instance=customer, data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/editcustomer/' + str(customer_id))
+            return redirect(f'/customers')
         else:
             return render(
                 request,
@@ -994,6 +1002,7 @@ def create_customersteps(request, customerworkflow_pk):
                 'form': form
             }
         )
+
 @login_required(login_url='/')
 def edit_customerstep(request, customersteps_pk, customerworkflow_pk):
     user = User.objects.get(username=request.user)
@@ -1065,7 +1074,7 @@ def create_customerworkflow(request):
         username = request.user
 
     if request.method == 'POST':
-        form = CustomerWorkflowForm(request.POST)
+        form = CustomerWorkflowForm( request.user, request.POST)
         if form.is_valid():
             customerworkflow = form.save(commit=False)
             customerworkflow.user = request.user
@@ -1074,7 +1083,7 @@ def create_customerworkflow(request):
                     '/customerworkflows'
                 )
         else:
-            form = CustomerWorkflowForm()
+            form = CustomerWorkflowForm(request.user)
             return render(
                 request,
                 'create_customerworkflow.html',
@@ -1085,7 +1094,7 @@ def create_customerworkflow(request):
                 }
             )
     else:
-        form = CustomerWorkflowForm()
+        form = CustomerWorkflowForm(request.user)
         return render(
             request,
             'create_customerworkflow.html',
@@ -1126,7 +1135,7 @@ def edit_customerworkflow(request, customerworkflow_pk):
 def customerworkflow_details(request):
     user = User.objects.get(username=request.user)
     customerworkflow = CustomerWorkflow.objects.filter(user = user)
-    form = CustomerWorkflowForm
+    form = CustomerWorkflowForm(request.user)
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
