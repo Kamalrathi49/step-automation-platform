@@ -16,7 +16,7 @@ from rest_framework.authtoken.models import Token
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To
-
+import re
 from .models import *
 from .models import Country
 from userforms.models import UserForms
@@ -26,17 +26,20 @@ from accountsapp.forms import *
 
 # landing page
 def index(request):
-    form = LoginForm()
+    loginform = LoginForm()
+    registerform = RegisterForm()
     # if user is authenticated it will redirect to dashboard
-    if request.user.is_authenticated and request.user.is_superuser :
+    if request.user.is_authenticated and request.user.is_superuser:
         return redirect('/adminuser/dashboard')
-    elif request.user.is_authenticated and not request.user.is_superuser:
+    elif request.user.is_authenticated and request.user.is_staff:
         return redirect('/dashboard')
+    elif request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
+        return redirect('/customers')
     else:
         return render(
             request,
             'demo-web-studio.html',
-            {'loginform': form}
+            {'loginform': loginform, 'registerform': registerform}
         )
 
 
@@ -63,7 +66,6 @@ def delete_account(request):
 def signin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
-        print('--------keep going 1------', form.errors)
         if form.is_valid(): 
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -72,13 +74,17 @@ def signin(request):
                 auth_login(request, user)
                 if user.is_superuser:
                     return redirect('/adminuser/dashboard')
-                else: 
+                elif user.is_staff: 
                     return redirect('/dashboard')
+                else:
+                    return redirect('/customers')
                 
             else:
-                return redirect('/')
+                return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Email and Password'}),
+                                content_type='application/json')
         else :
-            return redirect('/')
+            return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Email and Password'}),
+                                content_type='application/json')
     else:
         form = LoginForm()
         ctx = {'form' : form}
@@ -88,26 +94,29 @@ def signin(request):
 # creating new user
 def signup(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        try:
-            # if email already exists it will display error message
-            usersemail = User.objects.get(email=email)
-            return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'User or Email Already Exists'}),
-                                content_type='application/json')
-        except User.DoesNotExist:
-            # if emails doesn't exists it will create the user and redirect to users dashboard
-            user = User.objects.create_user(
-                username=email,
-                password=password,
-                email=email,
-            )
-            user.is_staff = False
-            user.is_superuser = False
-            user.save()
-            login(request, user)
-            return HttpResponse(json.dumps({'status_msg': 'Ok', 'msg': 'Successfully Registered'}),
-                                content_type='application/json')
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                # if email already exists it will display error message
+                usersemail = User.objects.get(email=email)
+                return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'User or Email Already Exists'}),
+                                    content_type='application/json')
+            except User.DoesNotExist:
+                res = re.search(r'@[\w-]+\.[\w.-]+', email)
+                res = res.group(0)
+                username = email.replace(res, '')
+                user = form.save(commit=False)
+                user.username = username
+                user.is_staff = True
+                user.is_active = True
+                user.is_superuser = False
+                user.save()
+                login(request, user)
+                print('---------------->>>',user.username)
+                return redirect('/dashboard')
+        return HttpResponse(json.dumps({'status_msg': 'Ok', 'msg': 'Successfully Registered'}),
+                                    content_type='application/json')
 
 
 @login_required(login_url='/')

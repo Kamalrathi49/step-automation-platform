@@ -3,6 +3,7 @@ from stepautomationapp.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+
 # Create your views here.
 
 @login_required(login_url='/')

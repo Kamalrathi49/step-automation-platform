@@ -136,6 +136,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ]
 }
+AUTHENTICATION_BACKENDS = ['accountsapp.backends.EmailBackend']
 
 # AUTH_USER_MODEL = 'accountsapp.User'
 
