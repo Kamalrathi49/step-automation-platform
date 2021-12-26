@@ -11,7 +11,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from rest_framework.decorators import permission_classes
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 from sendgrid import SendGridAPIClient
@@ -49,6 +49,10 @@ def index(request):
         template + '.html',
         {}
     )'''
+
+def error_404(request, exception):
+        data = {}
+        return render(request,'404.html', data)
 
 
 # delete the user account
@@ -113,24 +117,21 @@ def signup(request):
                 user.is_superuser = False
                 user.save()
                 login(request, user)
-                print('---------------->>>',user.username)
                 return redirect('/dashboard')
         return HttpResponse(json.dumps({'status_msg': 'Ok', 'msg': 'Successfully Registered'}),
                                     content_type='application/json')
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def dashboard(request):
     userdetails = User.objects.get(username=request.user)
     try:
         user_data = UserData.objects.get(userrelation=userdetails)
         profilepic = user_data.profilepic
         if request.method == 'POST':
-            print('-------------'. form.errors)
             form = UserDataForm(request.POST or None, instance=user_data)
-            print('-------------'. form.errors)
             if form.is_valid():
-                print('-------------'. form.errors)
                 form.save()
                 return redirect(f'/account-profile')
             else: 
@@ -143,8 +144,7 @@ def dashboard(request):
                 'account-profile.html',
                 {
                     'userdataform': form,
-                    'profilepic': 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png',
-                    'profile_pic': profilepic,
+                    'profilepic': profilepic.url,
                     
                 }
         )
@@ -233,6 +233,7 @@ def updateProfilePic(request):
 
 # to create steps of the user
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def handleStepFiles(request):
     user = User.objects.get(username=request.user)
     try:
@@ -309,6 +310,7 @@ def handleStepFiles(request):
 
 # to get the details of the project based on their project name
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def get_project_details(request, projectName):
     userdetails = User.objects.get(username=request.user)
     data = UserFiles.objects.get(user=userdetails, projectName=projectName)
@@ -453,6 +455,7 @@ def update_password(request, token):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def create_steps(request, project_template_pk):
     user = User.objects.get(username=request.user)
     project_template = ProjectTemplate.objects.get(pk=project_template_pk)
@@ -501,6 +504,7 @@ def create_steps(request, project_template_pk):
         )
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def edit_step(request, steps_pk, project_template_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -527,12 +531,14 @@ def edit_step(request, steps_pk, project_template_pk):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def delete_steps(request, project_template_pk, steps_pk):
     steps = Steps.objects.get(id = steps_pk, project_template_id = project_template_pk).delete()
     return redirect(f'/displaysteps/{project_template_pk}')
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def display_steps(request, project_template_pk ):
     user = User.objects.get(username=request.user)
     try:
@@ -560,6 +566,7 @@ def display_steps(request, project_template_pk ):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def dashboard_details(request):
     user = User.objects.get(username=request.user)
     try:
@@ -581,6 +588,7 @@ def dashboard_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def template_details(request):
     user = User.objects.get(username=request.user)
     project_template = ProjectTemplate.objects.filter(user = user)
@@ -607,6 +615,7 @@ def template_details(request):
 
 # to display the documents of current user
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def documents_details(request):
     user = User.objects.get(username=request.user)
     form = DocumentsForm()
@@ -631,6 +640,7 @@ def documents_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def clients_details(request):
     user = User.objects.get(username=request.user)
     try:
@@ -651,6 +661,7 @@ def clients_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def cases_details(request):
     user = User.objects.get(username=request.user)
     try:
@@ -671,6 +682,7 @@ def cases_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def project_details(request):
     user = User.objects.get(username=request.user)
     try:
@@ -691,6 +703,7 @@ def project_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def customers_details(request):
     user = User.objects.get(username=request.user)
     try:
@@ -715,6 +728,7 @@ def customers_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def edit_customer(request, customer_id):
     user = User.objects.get(username=request.user)
     try:
@@ -754,6 +768,7 @@ def edit_customer(request, customer_id):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def delete_customer(request, customer_id):
     Customers.objects.get(id=customer_id).delete()
     return redirect('/customers')
@@ -761,6 +776,7 @@ def delete_customer(request, customer_id):
 
 # user to add the documents
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def create_document(request):
     user = User.objects.get(username=request.user)
     try:
@@ -801,6 +817,7 @@ def create_document(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def create_customer(request):
     user = User.objects.get(username=request.user)
     try:
@@ -863,6 +880,7 @@ def user_logout(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def create_project_template(request):
     user = User.objects.get(username=request.user)
     # project_template = ProjectTemplate.objects.get(pk = project_template_pk)
@@ -908,6 +926,7 @@ def create_project_template(request):
         )
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def edit_project_template(request, project_template_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -935,11 +954,13 @@ def edit_project_template(request, project_template_pk):
 
     
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def delete_project_template(request, project_template_pk):
     ProjectTemplate.objects.get(pk=project_template_pk).delete()
     return redirect('/workflows')
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def edit_document(request, documents_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -966,12 +987,14 @@ def edit_document(request, documents_pk):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def delete_document(request, documents_pk):
     Documents.objects.get(pk=documents_pk).delete()
     return redirect('/documents')
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def create_customersteps(request, customerworkflow_pk):
     user = User.objects.get(username=request.user)
     customerworkflow = CustomerWorkflow.objects.get(pk=customerworkflow_pk)
@@ -1020,6 +1043,7 @@ def create_customersteps(request, customerworkflow_pk):
         )
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def edit_customerstep(request, customersteps_pk, customerworkflow_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -1045,13 +1069,15 @@ def edit_customerstep(request, customersteps_pk, customerworkflow_pk):
         ctx = {'form': form, 'username': username, 'profilepic': profilepic, 'step': step, 'customerworkflow': customerworkflow}
         return render(request, 'edit_customersteps.html', ctx)
 
-
+@login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def delete_customerstep(request, customersteps_pk, customerworkflow_pk):
     steps = CustomerSteps.objects.get(id = customersteps_pk, customerworkflow_id = customerworkflow_pk).delete()
     return redirect(f'/customerworkflowsteps/{customerworkflow_pk}/')
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def display_customerstep(request, customerworkflow_pk ):
     user = User.objects.get(username=request.user)
     try:
@@ -1079,6 +1105,7 @@ def display_customerstep(request, customerworkflow_pk ):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def create_customerworkflow(request):
     user = User.objects.get(username=request.user)
     try:
@@ -1122,6 +1149,7 @@ def create_customerworkflow(request):
         )
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def edit_customerworkflow(request, customerworkflow_pk):
     user = User.objects.get(username=request.user)
     try:
@@ -1148,6 +1176,7 @@ def edit_customerworkflow(request, customerworkflow_pk):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def customerworkflow_details(request):
     user = User.objects.get(username=request.user)
     customerworkflow = CustomerWorkflow.objects.filter(user = user)
@@ -1172,6 +1201,7 @@ def customerworkflow_details(request):
 
 
 @login_required(login_url='/')
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def delete_customerworkflow(request, customerworkflow_pk):
     CustomerWorkflow.objects.get(pk=customerworkflow_pk).delete()
     return redirect('/customerworkflows')

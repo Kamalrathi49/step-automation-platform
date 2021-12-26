@@ -400,6 +400,9 @@
                                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
                                     {% if user.is_superuser %}
+                                    <span class="account-user-avatar">
+                                        <img src="{{profilepic}}" alt="user-image" class="rounded-circle">
+                                    </span>
                                     <span>
                                         <span class="account-user-name">{{request.user}}</span>
                                         <span class="account-position">Administration</span>

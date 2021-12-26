@@ -21,19 +21,41 @@
                     <div class="d-block d-sm-flex align-items-center">
                       <!--<img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic}} alt="Amanda Wilson" width="110">-->
                       <label for="file-input">
-                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profile_pic.url}} alt="Amanda Wilson" width="110" />
+                        {% if profilepic %}
+                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic}} alt="Amanda Wilson" width="110" />
+                        {% else %}
+                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src="https://stepsaasautomation.herokuapp.com/media/media/profilepic.png" alt="Amanda Wilson" width="110" />
+                        {% endif %}
                       </label>
-                      {% if userdataform.profilepic %}
+              
                       <div class="ps-sm-3 text-center text-sm-start">
                         <div class="p mb-0 fs-ms text-white">{{request.user.username | upper}}</div>
                         <div class="p mb-0 fs-ms text-white">{{request.user.email}}</div>
                       </div>
-                      {% else %}
-                      {{userdataform.profilepic | as_crispy_field}}
-                      <div class="ps-sm-3 text-center text-sm-start">
-                        <div class="p mb-0 fs-ms text-muted">Upload JPG, GIF or PNG image. 300 x 300 required.</div>
+                      <!-- ------ Modal ---- -->
+                      <div class="modal fade" id="update-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Update Profile <Picture></Picture></h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              {{userdataform.profilepic | as_crispy_field}}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      {% endif %}
+
+                      <div class="ps-sm-3 text-center text-sm-start">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-profile">Change Profile </button>
+                      </div>
                     </div>
                 </div>
                 <div>

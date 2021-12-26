@@ -8,3 +8,8 @@ urlpatterns = [
     # path('auth/', include('accountsapp.urls')),
     path('forms/',include('userforms.urls')),
 ]
+
+handler404 = 'stepautomationapp.views.error_404'
+# handler500 = 'stepautomationapp.views.error_500'
+# handler403 = 'stepautomationapp.views.error_403'
+# handler400 = 'stepautomationapp.views.error_400'
