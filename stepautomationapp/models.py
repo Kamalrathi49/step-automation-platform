@@ -5,10 +5,11 @@ from PIL import Image
 from django_countries.fields import CountryField
 
 class UserData(models.Model):
-    userrelation = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_data')
+    userrelation = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_data')
+    company = models.CharField(max_length=225, null=True, blank=True)
     country = CountryField(blank_label='(select country)')
     city = models.CharField(max_length=225, null=True, blank=True)
-    profilepic = models.ImageField(upload_to='media', default='media/profilepic.png')
+    profilepic = models.ImageField(upload_to='media/', default='media/profilepic.png')
     address = models.TextField(null=True, blank=True)
     zipcode = models.CharField(max_length=225, null=True, blank=True)
 

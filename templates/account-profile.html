@@ -1,4 +1,6 @@
 {% extends 'base_page.html' %}
+{% load crispy_forms_filters %}
+{% load i18n %}
 {% load static %}
 {% block script %}
     <script type="text/javascript" src="{% static 'js/citystate.js' %}"></script>
@@ -14,62 +16,59 @@
                 </div>
                 <!-- Content-->
                 <div class="bg-secondary rounded-3 p-4 mb-4">
-                  <form method="post" action="/updateprofilepic" enctype="multipart/form-data">
+                  <form method="post" action="{% url 'update-profile' %}" enctype="multipart/form-data">
                       {% csrf_token %}
                     <div class="d-block d-sm-flex align-items-center">
                       <!--<img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic}} alt="Amanda Wilson" width="110">-->
                       <label for="file-input">
-                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic}} alt="Amanda Wilson" width="110" />
+                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profile_pic.url}} alt="Amanda Wilson" width="110" />
                       </label>
-                      <input style="display: none;" id="file-input" type="file" accept="image/*" name="profilepic" required />
+                      {% if userdataform.profilepic %}
                       <div class="ps-sm-3 text-center text-sm-start">
-                        <button class="btn btn-light shadow btn-sm mb-2" type="submit" id="profile-pic"><i class="ai-refresh-cw me-2"></i>Change avatar</button>
+                        <div class="p mb-0 fs-ms text-white">{{request.user.username | upper}}</div>
+                        <div class="p mb-0 fs-ms text-white">{{request.user.email}}</div>
+                      </div>
+                      {% else %}
+                      {{userdataform.profilepic | as_crispy_field}}
+                      <div class="ps-sm-3 text-center text-sm-start">
                         <div class="p mb-0 fs-ms text-muted">Upload JPG, GIF or PNG image. 300 x 300 required.</div>
                       </div>
+                      {% endif %}
                     </div>
-                  </form>
                 </div>
                 <div>
                   <div id="loaderprofile" class="lds-dual-ring hidden overlay" style="width: 100%;height: 100%"></div>
                 </div>
                 <span id="account-display-msg"></span>
-                <form method="post" action="updateprofile">
-                  {% csrf_token %}
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="mb-3 pb-1">
                         <label class="form-label px-0" for="account-country">Country</label>
-                        <select class="form-select" id="account-country" name="country">
-                          <option value='Choose City'>Choose Country</option>
-                          {% if country %}
-                            <option value="{{country}}" selected>{{country}}</option>
-                          {% endif %}
-                          {% for country in countries %}
-                            <option value={{country.country}}>{{country.country}}</option>
-                          {% endfor %}
-                        </select>
+                          {{userdataform.country | as_crispy_field}}
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="mb-3 pb-1">
                         <label class="form-label px-0" for="account-city">City</label>
-                        <select class="form-select" id="account-city" name="city">
-                          {% if city %}
-                            <option value="{{city}}" selected>{{city}}</option>
-                          {% endif %}
-                        </select>
+                        {{userdataform.city | as_crispy_field}}
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="mb-3 pb-1">
                         <label class="form-label px-0" for="account-address">Address Line</label>
-                        <input class="form-control" type="text" id="account-address" value="{{address}}" name="address" required>
+                        {{userdataform.address | as_crispy_field}}
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="mb-3 pb-1">
                         <label class="form-label px-0" for="account-zip">ZIP Code</label>
-                        <input class="form-control" type="text" id="account-zip" value="{{zipcode}}" name="zipcode" required>
+                        {{userdataform.zipcode | as_crispy_field}}
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="mb-3 pb-1">
+                        <label class="form-label px-0" for="comapny">Company</label>
+                        {{userdataform.company | as_crispy_field}}
                       </div>
                     </div>
                     <div class="col-12">

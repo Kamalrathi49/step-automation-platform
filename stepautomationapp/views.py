@@ -122,47 +122,51 @@ def signup(request):
 @login_required(login_url='/')
 def dashboard(request):
     userdetails = User.objects.get(username=request.user)
-    countries = Country.objects.all()
     try:
-        # if user updated his profile picture or data
-        userdata = UserData.objects.get(userrelation=userdetails)
-        print(userdata.profilepic)
-        print(userdata.country)
-        return render(
-            request,
-            'account-profile.html',
-            {
-                'logged': True,
-                'username': userdetails.username,
-                'email': userdetails.email,
-                'first_name': userdetails.first_name,
-                'last_name': userdetails.last_name,
-                'address': userdata.address,
-                'zipcode': userdata.zipcode,
-                'country': userdata.country,
-                'city': userdata.city,
-                'profilepic': 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic),
-                'countries': countries,
-            }
+        user_data = UserData.objects.get(userrelation=userdetails)
+        profilepic = user_data.profilepic
+        if request.method == 'POST':
+            print('-------------'. form.errors)
+            form = UserDataForm(request.POST or None, instance=user_data)
+            print('-------------'. form.errors)
+            if form.is_valid():
+                print('-------------'. form.errors)
+                form.save()
+                return redirect(f'/account-profile')
+            else: 
+                return redirect(f'/account-profile')
+
+        else :
+            form = UserDataForm(request.POST or None, instance=user_data)
+            return render(
+                request,
+                'account-profile.html',
+                {
+                    'userdataform': form,
+                    'profilepic': 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png',
+                    'profile_pic': profilepic,
+                    
+                }
         )
     except UserData.DoesNotExist:
-        return render(
-            request,
-            'account-profile.html',
-            {
-                'logged': True,
-                'username': userdetails.username,
-                'email': userdetails.email,
-                'first_name': userdetails.first_name,
-                'last_name': userdetails.last_name,
-                'address': '',
-                'zipcode': '',
-                'country': False,
-                'city': False,
-                'profilepic': 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png',
-                'countries': countries
-            }
-        )
+        if request.method == 'POST':
+            form = UserDataForm(request.POST)
+            if form.is_valid():
+                form.save(commit=False)
+                form.userrelation = request.user
+                form.save()
+            else:
+                return redirect('/account-profile')
+        else:
+            form = UserDataForm()
+            return render(
+                request,
+                'account-profile.html',
+                {
+                    'userdataform': form,
+                    'profilepic': 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png',
+                }
+            )
 
 
 # to create the dependent dropdown for the city and states
@@ -186,6 +190,7 @@ def updateProfile(request):
     try:
         userdata = UserData.objects.get(userrelation=user.id)
         userdata.country = request.POST.get('country')
+        userdata.company = request.POST.get('company')
         userdata.city = request.POST.get('city')
         userdata.address = request.POST.get('address')
         userdata.zipcode = request.POST.get('zipcode')
@@ -194,6 +199,7 @@ def updateProfile(request):
         userdata = UserData.objects.create(
             userrelation=user,
             country=request.POST.get('country'),
+            company=request.POST.get('country'),
             city=request.POST.get('city'),
             address=request.POST.get('address'),
             zipcode=request.POST.get('zipcode')

@@ -103,7 +103,7 @@ class CustomerWorkflowForm(forms.ModelForm):
         'class': 'form-control',
         'style': 'margin-bottom:;',
         'placeholder': 'Enter Customer Workflow Name'
-    }))
+         }))
     lead = forms.ChoiceField(choices=CHOICE_LEAD, widget=forms.Select(attrs={
         'class': 'form-control',
         'style': 'cursor: pointer;',

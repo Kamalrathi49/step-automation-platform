@@ -8,18 +8,22 @@ from django.contrib.auth.decorators import user_passes_test
 
 @login_required(login_url='/')
 def dashboard(request):
-    labels = ['Guide', 'Admin', 'Guidee']
+    labels = ['Admin', 'Guide', 'Guidee']
     admin = []
-    general = []
+    guide = []
+    guidee = []
     data = []
     queryset = User.objects.all()
     totaluser = User.objects.all().count()
     for user in queryset:
             if user.is_superuser:
                 admin.append(user.username)
-            else: 
-                general.append(user.username)
-    data.append(len(general)), data.append(len(admin)), data.append(4)
+            elif user.is_staff: 
+                guide.append(user.username)
+            else:
+                guidee.append(user.username)
+
+    data.append(len(admin)), data.append(len(guide)), data.append(len(guidee))
 
     return render(request, 'admin/admindashboard.html', {
         'userlabels': labels,

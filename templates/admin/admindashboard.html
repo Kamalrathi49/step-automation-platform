@@ -12,11 +12,17 @@
             </div>
         </div>
     </div>
-
-    <div class="card card-body" id="container" style="width: 50%;">
-        <p class="card-title"> Total Accounts</p>
+    <div class="card border-light mb-3" style="max-width: 28rem;">
+      <div class="card-header">Total Accounts: {{totaluser}}</div>
+      <div class="card-body">
         <canvas id="pie-chart"></canvas>
+        <ul>
+          <li class="badge text-danger border border-danger" >Admin: {{userdata.0}}</li><br>
+          <li class="badge text-primary border border-primary" >Guide: {{userdata.1}}</li><br>
+          <li class="badge text-success border border-success" >Guidee: {{userdata.2}}</li>
+        </ul>
       </div>
+    </div>
     
       <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
       <script>

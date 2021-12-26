@@ -14,7 +14,7 @@ urlpatterns = [
     path('updateprofile', views.updateProfile, name='update-profile'),
     path('getcity', views.getCities),
     path('deleteaccount', views.delete_account, name='deleteaccount'),
-    path('updateprofilepic', views.updateProfilePic, name='updateProfile'),
+    path('updateprofilepic', views.updateProfilePic, name='update-Profilepic'),
     path('steps', views.handleStepFiles, name='steps'),
     path('project/<projectName>', views.get_project_details),
     path('forget-password', views.forgetPassword, name='forgetpassword'),
