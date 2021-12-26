@@ -62,10 +62,19 @@
                                 {% endif %}
                             </td>
                               <td>
-                                  {{user.username}}                                
+                                <span class="account-user-avatar">
+                                    {% for item in userdata  %}
+                                {% if item.userrelation.username == user.username %}
+                                  {% if item.profilepic %}
+                                   <img src="{{item.profilepic.url}}" alt="user-image" class="rounded-circle" height="38px" width="38px">
+                                  {% else %}
+                                  <img src="https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png" alt="user-image" class="rounded-circle" height="38px" width="38px">
+                                  {% endif %}
+                                {% endif %}
+                               {% endfor %}
+                                </span>{{user.username}}                                
                               </td>
                               <td>
-                                
                                 {% for item in userdata  %}
                                 {% if item.userrelation.username == user.username %}
                                   {% if item.company %}
@@ -84,10 +93,10 @@
                                     {% endfor %}
                               </td>
                               <td>
-                                 {{user.last_login.date }}
-                              </td>
-                              <td>
-                                 {{user.date_joined.date}}
+                                  {{user.date_joined.date}}
+                             </td>
+                             <td>
+                                  {{user.last_login.date }}
                               </td>
                               <td>
                                 {% if user.is_active %}

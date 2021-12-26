@@ -27,7 +27,7 @@ def userforms(request):
                 'email': userdetails.email,
                 'first_name': userdetails.first_name,
                 'last_name': userdetails.last_name,
-                'profilepic': 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic),
+                'profilepic': userdata.profilepic.url,
                 'userforms': all_forms,
             }
         )
@@ -151,7 +151,7 @@ def get_all_forms(request):
                 'email': userdetails.email,
                 'first_name': userdetails.first_name,
                 'last_name': userdetails.last_name,
-                'profilepic': 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic),
+                'profilepic': userdata.profilepic.url,
                 'forms': forms
             }
         )

@@ -122,8 +122,15 @@ def signup(request):
 def dashboard(request):
     userdetails = User.objects.get(username=request.user)
     try:
+        userdata = UserData.objects.get(userrelation=userdetails)
+        username = userdetails.username
+        profilepic = userdata.profilepic.url
+        print(profilepic)
+    except UserData.DoesNotExist:
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
+        username = request.user
+    try:
         user_data = UserData.objects.get(userrelation=userdetails)
-        profilepic = user_data.profilepic
         if request.method == 'POST':
             form = UserDataForm(request.POST or None, instance=user_data)
             if form.is_valid():
@@ -139,7 +146,8 @@ def dashboard(request):
                 'account-profile.html',
                 {
                     'userdataform': form,
-                    'profilepic': profilepic.url,
+                    'profilepic': profilepic
+,
                     
                 }
         )
@@ -159,7 +167,7 @@ def dashboard(request):
                 'account-profile.html',
                 {
                     'userdataform': form,
-                    'profilepic': 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png',
+                    'profilepic': profilepic
                 }
             )
 
@@ -234,10 +242,10 @@ def handleStepFiles(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
         print(profilepic)
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = '../static/assets/images/profilepic.png'
         username = request.user
     userdata = UserFiles.objects.filter(user=user)
     if userdata.count() == 0:
@@ -309,6 +317,8 @@ def handleStepFiles(request):
 def get_project_details(request, projectName):
     userdetails = User.objects.get(username=request.user)
     data = UserFiles.objects.get(user=userdetails, projectName=projectName)
+    profilepic = UserData.objects.get(userrelation = request.user)
+
     try:
         userdata = UserData.objects.get(userrelation=userdetails)
         return render(
@@ -320,7 +330,7 @@ def get_project_details(request, projectName):
                 'first_name': userdetails.first_name,
                 'last_name': userdetails.last_name,
                 'data': data,
-                'profilepic': 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic),
+                'profilepic': profilepic.profilepic.url,
             }
         )
     except UserData.DoesNotExist:
@@ -333,7 +343,7 @@ def get_project_details(request, projectName):
                 'first_name': userdetails.first_name,
                 'last_name': userdetails.last_name,
                 'data': data,
-                'profilepic': 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png',
+                'profilepic': profilepic.profilepic.url,
             }
         )
 
@@ -457,10 +467,9 @@ def create_steps(request, project_template_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
-        print(profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     if request.method == 'POST':
         form = Stepsform(request.POST, request.FILES)
@@ -505,9 +514,9 @@ def edit_step(request, steps_pk, project_template_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     project_template = ProjectTemplate.objects.get(id = project_template_pk)
     step = Steps.objects.get(id=steps_pk, project_template__id = project_template_pk)
@@ -539,9 +548,9 @@ def display_steps(request, project_template_pk ):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     steps = Steps.objects.filter(project_template_id = project_template_pk)
     project_template = ProjectTemplate.objects.get(id = project_template_pk)
@@ -567,9 +576,9 @@ def dashboard_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     return render(
         request,
@@ -591,9 +600,9 @@ def template_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     return render(
         request,
@@ -617,9 +626,9 @@ def documents_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     documents = Documents.objects.filter(user=request.user.username)
     return render(
@@ -641,9 +650,9 @@ def clients_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     return render(
         request,
@@ -662,9 +671,9 @@ def cases_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     return render(
         request,
@@ -683,9 +692,9 @@ def project_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     return render(
         request,
@@ -704,9 +713,9 @@ def customers_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     customers = Customers.objects.filter(user=request.user.username)
     form = CustomersForm()
@@ -729,9 +738,9 @@ def edit_customer(request, customer_id):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     customer = Customers.objects.get(id=customer_id)
     if request.method == 'POST':
@@ -777,9 +786,9 @@ def create_document(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     if request.method == 'POST':
         form = DocumentsForm(request.POST, request.FILES)
@@ -818,9 +827,9 @@ def create_customer(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     if request.method == 'POST':
         form = CustomersForm(request.POST)
@@ -882,9 +891,9 @@ def create_project_template(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
 
     if request.method == 'POST':
@@ -927,9 +936,9 @@ def edit_project_template(request, project_template_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
 
     if request.method == 'POST':
@@ -961,9 +970,9 @@ def edit_document(request, documents_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
 
     document = Documents.objects.get(id=documents_pk)
@@ -996,10 +1005,10 @@ def create_customersteps(request, customerworkflow_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
         print(profilepic)
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     if request.method == 'POST':
         form = CustomerStepsform(request.POST, request.FILES)
@@ -1044,9 +1053,9 @@ def edit_customerstep(request, customersteps_pk, customerworkflow_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
 
     customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
@@ -1078,9 +1087,9 @@ def display_customerstep(request, customerworkflow_pk ):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     steps = CustomerSteps.objects.filter(customerworkflow_id = customerworkflow_pk)
     customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
@@ -1106,9 +1115,9 @@ def create_customerworkflow(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
 
     if request.method == 'POST':
@@ -1150,9 +1159,9 @@ def edit_customerworkflow(request, customerworkflow_pk):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     if request.method == 'POST':
         customerworkflow = CustomerWorkflow.objects.get(id = customerworkflow_pk)
@@ -1179,9 +1188,9 @@ def customerworkflow_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/' + str(userdata.profilepic)
+        profilepic = userdata.profilepic.url
     except UserData.DoesNotExist:
-        profilepic = 'https://stepsaasautomation.herokuapp.com/media/media/profilepic.png'
+        profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
     return render(
         request,
