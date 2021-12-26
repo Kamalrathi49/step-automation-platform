@@ -50,11 +50,6 @@ def index(request):
         {}
     )'''
 
-def error_404(request, exception):
-        data = {}
-        return render(request,'404.html', data)
-
-
 # delete the user account
 @login_required(login_url='/')
 def delete_account(request):
