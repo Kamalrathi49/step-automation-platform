@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import User, AbstractUser
 from PIL import Image
 from django_countries.fields import CountryField
+from accountsapp.utils import *
 
 class UserData(models.Model):
     userrelation = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_data')
@@ -12,9 +13,20 @@ class UserData(models.Model):
     profilepic = models.ImageField(upload_to='media/', default='media/profilepic.png')
     address = models.TextField(null=True, blank=True)
     zipcode = models.CharField(max_length=225, null=True, blank=True)
+    invite_code = models.CharField(max_length=12, blank=True)
 
     def __str__(self):
         return self.userrelation.username
+
+    def get_invited_profiles(self):
+        pass
+
+    def save(self, *args, **kwargs):
+        if self.invite_code == "":
+            code = generate_invite_code()
+            self.invite_code = code
+        super().save(*args, **kwargs)
+
 
 
 class UserFiles(models.Model):
@@ -66,6 +78,8 @@ class Steps(models.Model):
     created_on = models.DateField(auto_now_add=True)
     project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
 
+    def __str__(self):
+        return self.description
 
 class Documents(models.Model):
     user = models.CharField(max_length=225)

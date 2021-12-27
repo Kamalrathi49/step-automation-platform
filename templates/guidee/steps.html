@@ -1,0 +1,99 @@
+{% extends 'base_page.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+      <div class="page-title-box">
+          <div class="page-title-right">
+              <!-- <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                  <li class="breadcrumb-item active"><a href="/workflows">Standard Workflows</a></li>
+                  <li class="breadcrumb-item active"> Standard Workflows Steps</li>
+              </ol> -->
+          </div>
+          <h4 class="page-title">Workflows Steps</h4>
+      </div>
+  </div>
+</div>
+<!-- end page title -->
+
+<div class="row">
+  <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+              <!-- <div class="row mb-2">
+                    <p> {{project_template.description}}  
+                        <span style="margin-left:6px;" class="badge bg-success">{{project_template.get_step_count}} Steps </span>
+                    </p>
+                     <p>Lead: {{project_template.lead}}</p>
+                  <div class="col-sm-4">
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropcreatesteps" ><i class="mdi mdi-plus-circle me-2"></i>Add Step</a>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="text-sm-end">
+                        <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
+                        <button type="button" class="btn btn-light mb-2">Export</button>
+                    </div>
+                </div>  
+              </div> -->
+
+              <div class="table-responsive">
+                  <table class="table table-centered w-100 dt-responsive nowrap" id="products-datatable">
+                      <thead class="table-light">
+                          <tr>
+                             
+                              <th class="all">Step</th>
+                              <th>Description</th>
+                              <th>Instruction</th>
+                              <th>Step Visible</th>
+                              <th>Download</th>
+                              <th>File</th>
+                              <th>Upload</th>
+                              <th style="width: 85px;">Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for step in steps %}
+                          <tr>
+                              <td>
+                                  {{step.count}}
+                              </td>
+                              <td>
+                                  {{step.description}}                                
+                              </td>
+                              <td>
+                                  {{step.instruction}}
+                              </td>
+                              <td> 
+                                {% if step.visibility == True %}
+                                  <ion-icon name="eye-outline"></ion-icon>
+                                {% elif step.visibility == False %}
+                                  <ion-icon name="eye-off-outline"></ion-icon>
+                                {% endif %}
+                              </td>
+                              <td>
+                                {% if step.download == True %}
+                                <ion-icon style="font-size: 25px;color: green;"  name="checkmark-outline"></ion-icon>
+                                {% elif step.download == False %}
+                                    <ion-icon style="font-size: 25px;color: red;"  name="close-outline"></ion-icon>
+                                {% endif %}
+                              </td>
+                              <td>
+                                <a href="/media/{{step.step_file}}" target="_blank"> {{step.step_file | splicestring:10}}
+                              </td>
+                              <td>
+                                {% if step.upload == True %}
+                                <ion-icon style="font-size: 25px;color: green;"  name="checkmark-outline"></ion-icon>
+                                {% elif step.upload == False %}
+                                    <ion-icon style="font-size: 25px;color: red;"  name="close-outline"></ion-icon>
+                                {% endif %}
+                              </td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div> <!-- end card-body-->
+      </div> <!-- end card-->
+  </div> <!-- end col -->
+</div>
+{% endblock %}

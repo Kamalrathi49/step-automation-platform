@@ -1,7 +1,6 @@
 from os import error
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 from django.contrib.auth import views as auth_views
@@ -34,7 +33,7 @@ def index(request):
     elif request.user.is_authenticated and request.user.is_staff:
         return redirect('/dashboard')
     elif request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
-        return redirect('/customers')
+        return redirect('admin/dashboard')
     else:
         return render(
             request,
@@ -76,7 +75,7 @@ def signin(request):
                 elif user.is_staff: 
                     return redirect('/dashboard')
                 else:
-                    return redirect('/customers')
+                    return redirect('guidee/dashboard/')
                 
             else:
                 return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Email and Password'}),
@@ -118,14 +117,12 @@ def signup(request):
 
 
 @login_required(login_url='/')
-@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def dashboard(request):
     userdetails = User.objects.get(username=request.user)
     try:
         userdata = UserData.objects.get(userrelation=userdetails)
         username = userdetails.username
-        profilepic = userdata.profilepic.url
-        print(profilepic)
+        profilepic = userdata.profilepic
     except UserData.DoesNotExist:
         profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
@@ -194,6 +191,7 @@ def updateProfile(request):
         userdata = UserData.objects.get(userrelation=user.id)
         userdata.country = request.POST.get('country')
         userdata.company = request.POST.get('company')
+        userdata.profilepic = request.POST.get('profilepic')
         userdata.city = request.POST.get('city')
         userdata.address = request.POST.get('address')
         userdata.zipcode = request.POST.get('zipcode')
@@ -202,7 +200,8 @@ def updateProfile(request):
         userdata = UserData.objects.create(
             userrelation=user,
             country=request.POST.get('country'),
-            company=request.POST.get('country'),
+            company=request.POST.get('company'),
+            profilepic=request.POST.get('profilepic'),
             city=request.POST.get('city'),
             address=request.POST.get('address'),
             zipcode=request.POST.get('zipcode')
@@ -212,26 +211,7 @@ def updateProfile(request):
 
 
 # for updating the profile picture of the user
-@login_required(login_url='/')
-def updateProfilePic(request):
-    user = User.objects.get(username=request.user)
-    try:
 
-        userdetails = UserData.objects.get(userrelation=user.id)
-        userdetails.profilepic = request.FILES.get('profilepic')
-        userdetails.save()
-        return redirect('/account-profile')
-    except UserData.DoesNotExist:
-        userdetails = UserData.objects.create(
-            userrelation=user,
-            profilepic=request.FILES.get('profilepic'),
-            address='',
-            country='',
-            city='',
-            zipcode=''
-        )
-        userdetails.save()
-        return redirect('/account-profile')
 
 
 # to create steps of the user

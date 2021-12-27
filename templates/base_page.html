@@ -101,7 +101,7 @@
                             </div>
                         </li>
                        
-                        {% else %}
+                        {% elif user.is_staff %}
                         <li class="side-nav-item">
                             <a href="/dashboard" class="side-nav-link">
                                 <i class="uil uil-home"></i>
@@ -187,6 +187,23 @@
                                 <span> Customers </span>
                             </a>
                         </li>
+                        {% else %}
+                        <li class="side-nav-item">
+                            <a href="{% url 'guidee-dashboard' %}" class="side-nav-link">
+                                <i class="uil uil-home"></i>
+                                <span> My StepGuides</span>
+                            </a>
+                        </li>
+                        <ul class="side-nav-second-level" style="position: relative">
+                            {% if '/guidee/steps' in request.path %}
+                                <li>
+                                    <a class="m-1" href={{request.path}} >
+                                        <i class="uil-comments-alt"></i>
+                                        <span> Steps </span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
                         {% endif %}
                     </ul>
                     <!-- End Sidebar -->
@@ -399,23 +416,23 @@
                             <li class="dropdown notification-list">
                                 <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                     aria-expanded="false">
+                                    <span class="account-user-avatar">
+                                        {% if profilepic %}
+                                        <img src="{{profilepic.url}}" alt="user-image" class="rounded-circle">
+                                        {% else %}
+                                        <img src="{% static 'assets/images/profilepic.png' %}" alt="user-image" class="rounded-circle">
+                                        {% endif %}
+                                    </span>
+                                    <span>
+                                        <span class="account-user-name">{{request.user}}</span>
                                     {% if user.is_superuser %}
-                                    <span class="account-user-avatar">
-                                        <img src="{{profilepic}}" alt="user-image" class="rounded-circle">
-                                    </span>
-                                    <span>
-                                        <span class="account-user-name">{{request.user}}</span>
                                         <span class="account-position">Administration</span>
-                                    </span>
-                                    {% else %}
-                                    <span class="account-user-avatar">
-                                        <img src="{{profilepic}}" alt="user-image" class="rounded-circle">
-                                    </span>
-                                    <span>
-                                        <span class="account-user-name">{{request.user}}</span>
+                                    {% elif user.is_staff %}
                                         <span class="account-position">Founder</span>
-                                    </span>
+                                    {% else %}
+                                        <span class="account-position">Guidee</span>
                                     {% endif %}
+                                    </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                                     <!-- item-->

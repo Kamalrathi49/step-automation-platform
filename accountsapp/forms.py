@@ -23,6 +23,7 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("email", 'password1', 'password2' )
+        
 
 
 class LoginForm(forms.Form):
@@ -53,3 +54,19 @@ class UserDataForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserDataForm, self).__init__(*args, **kwargs)
         self.fields['country'].label = ""
+class GuideeProfileForm(forms.ModelForm):
+    city = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control',  'placeholder': 'City'}), label='')
+    address = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control',  'placeholder': 'Address Line'}), label='')
+    zipcode = forms.CharField(required=False, widget=forms.NumberInput(attrs={
+        'class': 'form-control',  'placeholder': 'Zip Code'}), label='')
+    profilepic = forms.FileField(required=False, widget=forms.ClearableFileInput({
+        'class': 'form-control', 'name': 'profilepic',
+        }), label='')
+
+    class Meta:
+        model = UserData
+        exclude = ['userrelation', 'invited_by']
+        fields = '__all__'
+    
