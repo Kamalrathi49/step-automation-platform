@@ -33,7 +33,7 @@ def index(request):
     elif request.user.is_authenticated and request.user.is_staff:
         return redirect('/dashboard')
     elif request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
-        return redirect('admin/dashboard')
+        return redirect('guidee/dashboard')
     else:
         return render(
             request,
@@ -80,9 +80,8 @@ def signin(request):
             else:
                 return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Email and Password'}),
                                 content_type='application/json')
-        else :
-            return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Email and Password'}),
-                                content_type='application/json')
+        return HttpResponse(json.dumps({'status_msg': 'Ok', 'msg': 'Successfully Logged in'}),
+                                    content_type='application/json')
     else:
         form = LoginForm()
         ctx = {'form' : form}
