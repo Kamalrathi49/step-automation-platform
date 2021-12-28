@@ -22,7 +22,7 @@
                       <!--<img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic}} alt="Amanda Wilson" width="110">-->
                       <label for="file-input">
                         {% if profilepic %}
-                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic}} alt="Amanda Wilson" width="110" />
+                        <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src={{profilepic.url}} alt="Amanda Wilson" width="110" />
                         {% else %}
                         <img class="d-block rounded-circle mx-sm-0 mx-auto mb-3 mb-sm-0" src="https://stepsaasautomation.herokuapp.com/media/media/profilepic.png" alt="Amanda Wilson" width="110" />
                         {% endif %}
@@ -53,8 +53,8 @@
                         </div>
                       </div>
 
-                      <div class="ps-sm-3 text-center text-sm-start">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-profile">Change Profile </button>
+                      <div >
+                        <btn class="btn btn-primary bd-highligh" data-toggle="modal" data-target="#update-profile">Change Profile </btn>
                       </div>
                     </div>
                 </div>

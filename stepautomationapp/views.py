@@ -117,6 +117,26 @@ def signup(request):
 
 @login_required(login_url='/')
 def dashboard(request):
+    return render(request, 'dashboard.html')
+
+
+# to create the dependent dropdown for the city and states
+# this will return cities dependent on their countries
+@permission_classes([permissions.AllowAny])
+def getCities(request):
+    sname = request.GET['countrydata']
+    results = []
+    answer = str(sname)
+    selected_country = Country.objects.get(country=answer)
+    cities = selected_country.city_set.all()
+    for city in cities:
+        results.append({'name': city.city})
+    return HttpResponse(json.dumps(results), content_type='application/json')
+
+
+# for updating the user profile
+@login_required(login_url='/')
+def updateProfile(request):
     userdetails = User.objects.get(username=request.user)
     try:
         userdata = UserData.objects.get(userrelation=userdetails)
@@ -128,7 +148,7 @@ def dashboard(request):
     try:
         user_data = UserData.objects.get(userrelation=userdetails)
         if request.method == 'POST':
-            form = UserDataForm(request.POST or None, instance=user_data)
+            form = UserDataForm(request.POST or None, request.FILES, instance=user_data)
             if form.is_valid():
                 form.save()
                 return redirect(f'/account-profile')
@@ -166,47 +186,6 @@ def dashboard(request):
                     'profilepic': profilepic
                 }
             )
-
-
-# to create the dependent dropdown for the city and states
-# this will return cities dependent on their countries
-@permission_classes([permissions.AllowAny])
-def getCities(request):
-    sname = request.GET['countrydata']
-    results = []
-    answer = str(sname)
-    selected_country = Country.objects.get(country=answer)
-    cities = selected_country.city_set.all()
-    for city in cities:
-        results.append({'name': city.city})
-    return HttpResponse(json.dumps(results), content_type='application/json')
-
-
-# for updating the user profile
-@login_required(login_url='/')
-def updateProfile(request):
-    user = User.objects.get(username=request.user)
-    try:
-        userdata = UserData.objects.get(userrelation=user.id)
-        userdata.country = request.POST.get('country')
-        userdata.company = request.POST.get('company')
-        userdata.profilepic = request.POST.get('profilepic')
-        userdata.city = request.POST.get('city')
-        userdata.address = request.POST.get('address')
-        userdata.zipcode = request.POST.get('zipcode')
-        userdata.save()
-    except UserData.DoesNotExist:
-        userdata = UserData.objects.create(
-            userrelation=user,
-            country=request.POST.get('country'),
-            company=request.POST.get('company'),
-            profilepic=request.POST.get('profilepic'),
-            city=request.POST.get('city'),
-            address=request.POST.get('address'),
-            zipcode=request.POST.get('zipcode')
-        )
-        userdata.save()
-    return redirect('/account-profile')
 
 
 # for updating the profile picture of the user
@@ -555,7 +534,7 @@ def dashboard_details(request):
     try:
         userdata = UserData.objects.get(userrelation=user)
         username = user.username
-        profilepic = userdata.profilepic.url
+        profilepic = userdata.profilepic
     except UserData.DoesNotExist:
         profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
