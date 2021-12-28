@@ -80,7 +80,8 @@ def signin(request):
             else:
                 return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Email and Password'}),
                                 content_type='application/json')
-        return HttpResponse(json.dumps({'status_msg': 'Ok', 'msg': 'Successfully Logged in'}),
+        else :
+            return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Deatils'}),
                                     content_type='application/json')
     else:
         form = LoginForm()
@@ -111,9 +112,9 @@ def signup(request):
                 user.save()
                 login(request, user)
                 return redirect('/dashboard')
-        return HttpResponse(json.dumps({'status_msg': 'Ok', 'msg': 'Successfully Registered'}),
+        else :
+            return HttpResponse(json.dumps({'status_msg': 'NotOk', 'msg': 'Invalid Deatils'}),
                                     content_type='application/json')
-
 
 @login_required(login_url='/')
 def dashboard(request):
