@@ -443,16 +443,7 @@ def create_steps(request, project_template_pk):
                 )
            
         else:
-            form = Stepsform()
-            return render(
-                request,
-                'create_steps.html',
-                {
-                    'username': username,
-                    'profilepic': profilepic,
-                    'form': form
-                }
-            )
+            return HttpResponse("The Step number you're trying is already in use, Please try using different step number.")
     else:
         form = Stepsform()
         return render(
@@ -511,7 +502,7 @@ def display_steps(request, project_template_pk ):
     except UserData.DoesNotExist:
         profilepic = 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=20&m=1214428300&s=170667a&w=0&h=NPyJe8rXdOnLZDSSCdLvLWOtIeC9HjbWFIx8wg5nIks='
         username = request.user
-    steps = Steps.objects.filter(project_template_id = project_template_pk)
+    steps = Steps.objects.filter(project_template_id = project_template_pk).order_by('count')
     project_template = ProjectTemplate.objects.get(id = project_template_pk)
     form = Stepsform()
     

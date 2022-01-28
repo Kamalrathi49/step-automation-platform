@@ -68,7 +68,7 @@ class ProjectTemplate(models.Model):
 
 class Steps(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    count = models.FloatField()
+    count = models.FloatField(unique=True)
     description = models.CharField(max_length=224)
     instruction = models.TextField()
     visibility = models.BooleanField(default=False)
@@ -89,6 +89,8 @@ class Documents(models.Model):
 
     def __str__(self):
         return self.description + "-" + self.user
+    
+    
 
 
 class Customers(models.Model):
