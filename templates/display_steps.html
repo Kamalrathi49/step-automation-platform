@@ -91,7 +91,7 @@
                                 {% endif %}
                               </td>
                               <td>
-                                <a href="/media/{{step.step_file}}" target="_blank"> {{step.step_file | splicestring:10}}
+                                <a href="/media/{{step.step_file.step_file}}" target="_blank"> {{step.step_file.step_file | splicestring:10}}
                               </td>
                               <td>
                                 {% if step.upload == True %}

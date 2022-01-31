@@ -438,10 +438,7 @@ def create_steps(request, project_template_pk):
             step.project_template = project_template
             step.save()
             form = Stepsform()
-            return redirect(
-                    f'/displaysteps/{project_template_pk}/'
-                )
-           
+            return redirect(f'/displaysteps/{project_template_pk}/')
         else:
             return HttpResponse("The Step number you're trying is already in use, Please try using different step number.")
     else:

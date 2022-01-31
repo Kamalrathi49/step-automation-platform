@@ -1,3 +1,5 @@
+from email.policy import default
+from pydoc import Doc
 from django.contrib.auth.models import User
 from django.db.models import fields
 from django.forms.widgets import CheckboxInput
@@ -26,20 +28,25 @@ class Stepsform(forms.ModelForm):
         'placeholder': 'Enter Detailed Step Instructions',
         'rows':6, 'cols':15,
     }),label='Instructions')
-    visibility = forms.BooleanField( required=False, label='Step Visibile')
-    download = forms.BooleanField( required=False,  label='Download control visible')
-
-    step_file = forms.FileField(widget=forms.ClearableFileInput({
-        'class': 'form-control',
-        'name': 'step_file',
-        'style': 'width:70%;'
-        }), label='File for download')
+    visibility = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
+        'checked' : 'checked'
+    }), label='Step Visibile')
+    download = forms.BooleanField( required=False, label='Download control visible')
     upload = forms.BooleanField(required=False, label='Upload control visible')
 
     class Meta:
         model = Steps
         exclude = ['user', 'project_template']
         fields = '__all__'
+    
+    
+
+    def __init__(self, *args,**kwargs):
+        super (Stepsform,self ).__init__(*args,**kwargs)
+        # self.fields['step_file'].queryset = Documents.objects.filter(user=user)
+        self.fields['step_file'].label = 'File for download'
+        self.fields['step_file'].empty_label = 'Select File...'
+
 
 
 class DocumentsForm(forms.ModelForm):
@@ -116,7 +123,8 @@ class CustomerWorkflowForm(forms.ModelForm):
     def __init__(self,user,*args,**kwargs):
         super (CustomerWorkflowForm,self ).__init__(*args,**kwargs)
         self.fields['customer'].queryset = Customers.objects.filter(user=user)
-
+        self.fields['customer'].label = 'Customer'
+        self.fields['customer'].empty_label = 'Select Customer...'
 
 class CustomerStepsform(forms.ModelForm):
 

@@ -1,3 +1,4 @@
+from re import T
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User, AbstractUser
@@ -65,22 +66,6 @@ class ProjectTemplate(models.Model):
     def get_step_count(self):
         return Steps.objects.filter(project_template=self).count()
 
-
-class Steps(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    count = models.FloatField(unique=True)
-    description = models.CharField(max_length=224)
-    instruction = models.TextField()
-    visibility = models.BooleanField(default=False)
-    download = models.BooleanField(default=False)
-    step_file = models.FileField(upload_to='stepfiles')
-    upload = models.BooleanField(default=False)
-    created_on = models.DateField(auto_now_add=True)
-    project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
-
-    def __str__(self):
-        return self.description
-
 class Documents(models.Model):
     user = models.CharField(max_length=225)
     description = models.CharField(max_length=225)
@@ -88,10 +73,22 @@ class Documents(models.Model):
     file_add_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.description + "-" + self.user
-    
-    
+        return self.description
 
+class Steps(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    count = models.FloatField(unique=True)
+    description = models.CharField(max_length=224)
+    instruction = models.TextField()
+    visibility = models.BooleanField(default=True)
+    download = models.BooleanField(default=False)
+    step_file = models.ForeignKey(Documents, on_delete=models.CASCADE, blank=True, null=True)
+    upload = models.BooleanField(default=False)
+    created_on = models.DateField(auto_now_add=True)
+    project_template = models.ForeignKey(ProjectTemplate, on_delete=models.CASCADE, related_name='project_template')
+
+    def __str__(self):
+        return self.description
 
 class Customers(models.Model):
     user = models.CharField(max_length=225)
